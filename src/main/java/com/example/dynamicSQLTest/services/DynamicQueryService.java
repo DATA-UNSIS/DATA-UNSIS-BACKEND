@@ -17,6 +17,7 @@ public class DynamicQueryService {
     public List<Map<String, Object>> executeDynamicQuery(QueryRequest queryRequest) {
         StringBuilder queryBuilder = new StringBuilder(queryRequest.getBaseQuery());
         Map<String, Object> parameters = new HashMap<>();
+        Map<String, Object> multiParameters = new HashMap<>();
 
         // WHERE clause
         if (queryRequest.getFilters() != null && !queryRequest.getFilters().isEmpty()) {
@@ -30,12 +31,35 @@ public class DynamicQueryService {
             int paramCount = 1;
             for (Map.Entry<String, Object> entry : queryRequest.getFilters().entrySet()) {
                 if (entry.getValue() != null) {
-                    String paramName = "param" + paramCount++;
-                    conditions.add(entry.getKey() + " = :" + paramName);
-                    parameters.put(paramName, entry.getValue());
+                    if (!entry.getValue().toString().contains(",")) {
+                        String paramName = "param" + paramCount++;
+                        conditions.add(entry.getKey() + " = :" + paramName);
+                        parameters.put(paramName, entry.getValue());    
+                    }else {
+                        multiParameters.put(entry.getKey(), entry.getValue());
+                    }
                 }
             }
+            System.out.println(multiParameters.toString());
             queryBuilder.append(String.join(" AND ", conditions));
+
+            //OR 
+            if (!multiParameters.isEmpty()) {
+                StringBuilder pruebaOr = new StringBuilder(" AND ( ");
+                List<String> multiConditions = new ArrayList<>();
+                for (Map.Entry<String, Object> entry : multiParameters.entrySet()) {
+                    String condition = entry.getKey();
+                    String[] partes = entry.getValue().toString().split(",");
+                    for (String parte : partes) {
+                        parte = parte.replace("[", "").replace("]", "").trim();
+                        String paramName = "param" + paramCount++; 
+                        multiConditions.add(condition + " = :" + paramName);
+                        parameters.put(paramName,parte);
+                    }
+                }
+                pruebaOr.append(String.join(" OR ", multiConditions)).append(" )");
+                queryBuilder.append(pruebaOr);
+            }
         }
 
         // GROUP BY clause
