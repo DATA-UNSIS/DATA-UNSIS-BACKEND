@@ -1,0 +1,35 @@
+curl -X POST http://localhost:8080/api/query/execute \
+  -H "Content-Type: application/json" \
+  -d '{
+    "selectFields": ["nombre", "p_apellido", "s_apellido", "carrera", "semestre"],
+    "fromTables": ["usuarios", "alumnos"],
+    "limit": 10
+  }'
+
+curl -X POST http://localhost:8080/api/query/execute \
+  -H "Content-Type: application/json" \
+  -d '{
+    "selectFields": ["nombre", "p_apellido", "carrera", "semestre"],
+    "fromTables": ["usuarios", "alumnos"],
+    "filters": {
+      "a.carrera": "Licenciatura en Medicina"
+    }
+  }'
+
+curl -X POST http://localhost:8080/api/query/execute \
+  -H "Content-Type: application/json" \
+  -d '{
+    "selectFields": ["nombre", "p_apellido", "carrera", "beca_manutencion", "otro"],
+    "fromTables": ["usuarios", "alumnos", "becas"],
+    "filters": {
+      "beca_manutencion": true
+    }
+  }'
+
+curl -X POST http://localhost:8080/api/query/execute \
+  -H "Content-Type: application/json" \
+  -d '{
+    "selectFields": ["COUNT(*)", "carrera"],
+    "fromTables": ["alumnos"],
+    "groupBy": ["carrera"]
+  }'
