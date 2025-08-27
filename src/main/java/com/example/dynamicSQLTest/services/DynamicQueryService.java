@@ -1,10 +1,11 @@
 package com.example.dynamicSQLTest.services;
 
-import com.example.dynamicSQLTest.DTOs.QueryRequest;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.Query;
 import org.springframework.stereotype.Service;
+
+import com.example.dynamicSQLTest.DTOs.request.QueryRequest;
 
 import java.util.*;
 import java.util.regex.Matcher;
