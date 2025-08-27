@@ -1,6 +1,6 @@
 package com.example.dynamicSQLTest.controllers;
 
-import com.example.dynamicSQLTest.DTOs.QueryRequest;
+import com.example.dynamicSQLTest.DTOs.request.QueryRequest;
 import com.example.dynamicSQLTest.services.DynamicQueryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

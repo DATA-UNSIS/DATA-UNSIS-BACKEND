@@ -1,4 +1,4 @@
-package com.example.dynamicSQLTest.DTOs;
+package com.example.dynamicSQLTest.DTOs.request;
 
 import lombok.Getter;
 import lombok.Setter;
