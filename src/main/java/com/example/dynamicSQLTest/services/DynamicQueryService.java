@@ -45,7 +45,9 @@ public class DynamicQueryService {
 
             //OR 
             if (!multiParameters.isEmpty()) {
-                StringBuilder pruebaOr = new StringBuilder(" AND ( ");
+                StringBuilder pruebaOr = new StringBuilder();
+                if (!conditions.isEmpty()) pruebaOr.append("AND");
+                pruebaOr.append(" ( ");
                 List<String> multiConditions = new ArrayList<>();
                 for (Map.Entry<String, Object> entry : multiParameters.entrySet()) {
                     String condition = entry.getKey();
