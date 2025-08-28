@@ -5,17 +5,22 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.dynamicSQLTest.DTOs.enums.ETitles;
 import com.example.dynamicSQLTest.DTOs.request.GeneralQueryRequest;
+import com.example.dynamicSQLTest.DTOs.response.QueryResponse;
 
 import io.micrometer.common.lang.NonNull;
 
 @Service
 public class GeneralQueryService {
-        public List<GeneralQueryRequest> executeGeneralQuery(@NonNull GeneralQueryRequest request){
-        List<GeneralQueryRequest> results = new ArrayList<>();
+
+    @Autowired
+    private QueryResponse results;
+    
+        public QueryResponse executeGeneralQuery(@NonNull GeneralQueryRequest request){
         String finalQuery;//Se ocupa para sacar los results
         //Map<String, Object> parameters = new HashMap<>();
         switch (request.getTitle()) {
