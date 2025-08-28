@@ -3,6 +3,7 @@ package com.example.dynamicSQLTest.controllers;
 import com.example.dynamicSQLTest.DTOs.request.GeneralQueryRequest;
 import com.example.dynamicSQLTest.DTOs.request.QueryRequest;
 import com.example.dynamicSQLTest.services.DynamicQueryService;
+import com.example.dynamicSQLTest.services.GeneralQueryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,8 +14,16 @@ import java.util.Map;
 @RestController
 @RequestMapping("/data-unsis/api")
 public class QueryController {
+
     @Autowired
     private DynamicQueryService dynamicQueryService;
+
+    @Autowired
+    private GeneralQueryService generalQueryService;
+
+    QueryController(GeneralQueryService generalQueryService) {
+        this.generalQueryService = generalQueryService;
+    }
 
     @PostMapping("/execute-dynamic-query")
     public ResponseEntity<?> executeQuery(@RequestBody QueryRequest queryRequest) {
@@ -28,6 +37,6 @@ public class QueryController {
     }
     @PostMapping("/execute-general-query")
     public ResponseEntity<List<GeneralQueryRequest>> executeQuerys(@RequestBody GeneralQueryRequest request){
-        return ResponseEntity.ok(dynamicQueryService.executeDynamicQuerys(request));
+        return ResponseEntity.ok(generalQueryService.executeGeneralQuery(request));
     }
 }
