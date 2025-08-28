@@ -1,4 +1,4 @@
-package com.example.dynamicSQLTest.DTOs.enums;
+package com.example.dynamicSQLTest.enums;
 
 import lombok.Getter;
 
