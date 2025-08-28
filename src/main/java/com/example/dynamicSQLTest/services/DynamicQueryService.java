@@ -5,11 +5,8 @@ import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.Query;
 import org.springframework.stereotype.Service;
 
-import com.example.dynamicSQLTest.DTOs.request.GeneralQueryRequest;
 import com.example.dynamicSQLTest.DTOs.request.QueryRequest;
-import com.example.dynamicSQLTest.DTOs.enums.ETitles;
 
-import io.micrometer.common.lang.NonNull;
 
 import java.util.*;
 import java.util.regex.Matcher;
@@ -236,22 +233,6 @@ public class DynamicQueryService {
         System.out.println("Parameters: " + parameters);
 
         return executeNativeQuery(finalQuery, parameters);
-    }
-    public List<GeneralQueryRequest> executeDynamicQuerys(@NonNull GeneralQueryRequest request){
-        List<GeneralQueryRequest> results = new ArrayList<>();
-        switch (request.getTitle()) {
-            case ETitles.MAJOR_DISTRIBUTION :
-                break;
-            case ETitles.ECONOMIC_LEVEL : 
-                break;
-            case ETitles.SCHOLARSHIPS_REQUESTED :
-                break;
-            case ETitles.HOUSEHOLD_SERVICES :
-                break;
-            case ETitles.CIVIL_STATE :
-                break;
-        }
-        return results;
     }
 
     private String buildQueryFromComponents(QueryRequest queryRequest, Map<String, Object> parameters) {
