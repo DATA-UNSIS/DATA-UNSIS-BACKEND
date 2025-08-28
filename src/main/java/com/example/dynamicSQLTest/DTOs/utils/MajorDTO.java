@@ -1,11 +1,11 @@
 package com.example.dynamicSQLTest.DTOs.utils;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
 import lombok.Data;
 
 @Data
 public class MajorDTO {
-    private Map<String, Object> majors = new HashMap<>();
+    private List<String> majors = new ArrayList<>();
 }
