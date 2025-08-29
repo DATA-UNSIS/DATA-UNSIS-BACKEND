@@ -33,19 +33,15 @@ public class HouseHoldServicesService {
         try{
             //todas las carreras, todos los semestres y todos los sexos (No especifica ninguno)
             if(request.getMajor().getMajors().size()<=0 && request.getSemester().getSemesters().size()<=0 && request.getSexo().isEmpty()){
-                System.out.println("Entro a general \n");
                 nativeQuery = entityManager.createNativeQuery(GeneralQuerysConstants.COUNT_HOUSE_HOULD_SERVICES);
-                System.out.println("Query nativa: \n\n\n"+nativeQuery+"\n\n\n");
                 Object[] result = (Object[]) nativeQuery.getSingleResult();
                 for(int i=0; i<result.length; i++){
                     dataList.put(EHouseholdServices.values()[i].toString(), result[i]);
                 }
             }else{
-                System.out.println("Entro a compound \n");
                 compoundQuery=getCompoundQuery(request);
                 nativeQuery = entityManager.createNativeQuery(compoundQuery);
                 
-                System.out.println("Esta es la final native query: \n\n\n"+nativeQuery);
                 @SuppressWarnings("unchecked")
                 List<Object[]> resultList = nativeQuery.getResultList();
                 results.setTitle(title);
@@ -70,7 +66,7 @@ public class HouseHoldServicesService {
                     results.setData(dataDto);
                     return results;
                 }else
-                if(request.getMajor().getMajors().size()>0 && request.getSemester().getSemesters().size()>0 && !request.getSexo().isEmpty()){
+                if(request.getMajor().getMajors().size()>0 && request.getSemester().getSemesters().size()<=0 && !request.getSexo().isEmpty()){
                     dataDto.setData(queryProcessMajorSex(resultList, dataList));
                     results.setData(dataDto);
                     return results;
@@ -80,40 +76,147 @@ public class HouseHoldServicesService {
                     results.setData(dataDto);
                     return results;
                 }else
-                if(request.getMajor().getMajors().size()>0 && request.getSemester().getSemesters().size()>0 && !request.getSexo().isEmpty()){
+                if(request.getMajor().getMajors().size()<=0 && request.getSemester().getSemesters().size()>0 && !request.getSexo().isEmpty()){
                     dataDto.setData(queryProcessSemesterSex(resultList, dataList));
                     results.setData(dataDto);
                     return results;
                 }else
-                if(request.getMajor().getMajors().size()>0 && request.getSemester().getSemesters().size()>0 && !request.getSexo().isEmpty()){
+                if(request.getMajor().getMajors().size()<=0 && request.getSemester().getSemesters().size()<=0 && !request.getSexo().isEmpty()){
                     dataDto.setData(queryProcessSex(resultList, dataList));
                     results.setData(dataDto);
                     return results;
-                }   
+                }else
+                if(request.getMajor().getMajors().size()<=0 && request.getSemester().getSemesters().size()>0 && request.getSexo().isEmpty()){
+                    dataDto.setData(queryProcessSemester(resultList, dataList));
+                    results.setData(dataDto);
+                    return results;
+                }
+
                 return results;
     }
+    //Carrera + semestre + sexo
+    @SuppressWarnings("unchecked")
+    private Map<String, Object> queryProcessMajorSemesterSex(List<Object[]> resultList, Map<String, Object> dataList) {
+        for (Object[] row : resultList) {
+            String carrera = (String) row[0];   // columna 0 = carrera
+            String semestre = (String) row[1];  // columna 1 = semestre
+            String sexo = (String) row[2];      // columna 2 = sexo
 
-    private Map<String, Object> queryProcessMajorSemesterSex(List<Object[]> resultList, Map<String, Object> dataList){
-        return null;
+            // Recuperar el mapa de la carrera, o crear uno nuevo
+            Map<String, Object> carreraData = (Map<String, Object>) dataList.getOrDefault(carrera, new HashMap<>());
+
+            // Recuperar el mapa del semestre dentro de la carrera
+            Map<String, Object> semestreData = (Map<String, Object>) carreraData.getOrDefault(semestre, new HashMap<>());
+
+            // Mapa de servicios para este sexo
+            Map<String, Object> sexoData = new HashMap<>();
+
+            // Procesar los servicios (columnas a partir de la 3 en adelante)
+            for (int i = 3; i < row.length; i++) {
+                sexoData.put(EHouseholdServices.values()[i - 3].toString(), row[i]);
+            }
+
+            // Guardar sexo dentro del semestre
+            semestreData.put(sexo, sexoData);
+
+            // Actualizar carrera y dataList
+            carreraData.put(semestre, semestreData);
+            dataList.put(carrera, carreraData);
+        }
+        return dataList;
     }
 
-    private Map<String, Object> queryProcessMajorSemester(List<Object[]> resultList, Map<String, Object> dataList){
-        return null;
+    //Carrera + semestre
+   private Map<String, Object> queryProcessMajorSemester(List<Object[]> resultList, Map<String, Object> dataList) {
+        for (Object[] row : resultList) {
+            String carrera = (String) row[0];   // columna 0 = carrera
+            String semestre = (String) row[1]; // columna 1 = semestre
+
+            // Obtenemos el mapa de esa carrera (o uno nuevo)
+            @SuppressWarnings("unchecked")
+            Map<String, Object> carreraData = (Map<String, Object>) dataList.getOrDefault(carrera, new HashMap<>());
+
+            // Mapa para ese semestre
+            Map<String, Object> semestreData = new HashMap<>();
+
+            // Procesar servicios (las columnas a partir del índice 2)
+            for (int i = 2; i < row.length; i++) {
+                semestreData.put(EHouseholdServices.values()[i - 2].toString(), row[i]);
+            }
+
+            // Guardar este semestre dentro de la carrera
+            carreraData.put(semestre, semestreData);
+
+            // Actualizar la entrada de la carrera
+            dataList.put(carrera, carreraData);
+        }
+        return dataList;
     }
 
+
+      // Carrera + Sexo
     private Map<String, Object> queryProcessMajorSex(List<Object[]> resultList, Map<String, Object> dataList){
-        return null;
+    for(Object[] row : resultList) {
+        String carrera = (String) row[0]; // carrera
+        String sexo    = (String) row[1]; // sexo
+        String key     = carrera + " - " + sexo;
+
+        Map<String, Object> carreraData = new HashMap<>();
+            for(int i = 2; i < row.length; i++) { // Los COUNT empiezan en la tercera columna (índice 2)
+                carreraData.put(EHouseholdServices.values()[i-2].toString(), row[i]);
+            }
+            dataList.put(key, carreraData);
+        }
+        return dataList;
     }
 
+
+    // Semestre + Sexo
     private Map<String, Object> queryProcessSemesterSex(List<Object[]> resultList, Map<String, Object> dataList){
-        return null;
+        for(Object[] row : resultList) {
+            String semestre = (String) row[0];  // semestre
+            String sexo     = (String) row[1];  // sexo
+            String key      = semestre + " - " + sexo;
+
+            Map<String, Object> semestreData = new HashMap<>();
+            for(int i=2; i<row.length; i++){ // Saltamos semestre (0) y sexo (1)
+                semestreData.put(EHouseholdServices.values()[i-2].toString(), row[i]);
+            }
+            dataList.put(key, semestreData);
+        }
+        return dataList;
     }
 
+    // Solo Sexo
     private Map<String, Object> queryProcessSex(List<Object[]> resultList, Map<String, Object> dataList){
-        return null;
+        for(Object[] row : resultList) {
+            String sexo = (String) row[0];  // Tercera columna: sexo
+
+            Map<String, Object> sexoData = new HashMap<>();
+            for(int i=1; i<row.length; i++){ // Saltamos sexo (2)
+                sexoData.put(EHouseholdServices.values()[i-1].toString(), row[i]);
+            }
+            dataList.put(sexo, sexoData);
+        }
+        return dataList;
     }
 
+    //solo semestres
+    private Map<String, Object> queryProcessSemester(List<Object[]> resultList, Map<String, Object> dataList){
+        for(Object[] row : resultList){
+            String semestre = (String) row[0]; //semestre
+            Map<String, Object> semestreData = new HashMap<>();
+            // Procesar servicios (saltar primera columna que es semestre)
+            for(int i=1; i<row.length; i++){
+                semestreData.put(EHouseholdServices.values()[i-1].toString(), row[i]);
+            }
+            // Agregar datos de este semestre
+            dataList.put(semestre, semestreData);
+        }
+        return dataList;
+    }
 
+    //Solo carrera
     private Map<String, Object> queryProcessMajor(List<Object[]> resultList, Map<String, Object> dataList){
         for(Object[] row : resultList) {
                     String carrera = (String) row[0]; // Primera columna es carrera
@@ -135,7 +238,7 @@ public class HouseHoldServicesService {
         List<String> semesters = request.getSemester().getSemesters();
         String sex = request.getSexo();
 
-        //Carrera, semestre, sexo (Especifica al menos uno)
+        //Carrera + semestre + sexo (Especifica al menos uno)
         if(request.getMajor().getMajors().size()>0 && request.getSemester().getSemesters().size()>0 && !request.getSexo().isEmpty()){
             query.append("SELECT ").append("carrera, semestre, sexo, "+GeneralQuerysConstants.FILTERS_COUNT_HOUSE_HOULD_SERVICES);
             query.append(" FROM ").append(String.join(", ", tables));
@@ -145,10 +248,10 @@ public class HouseHoldServicesService {
             String concatenatedSemesters = "'" + String.join("', '", semesters) + "'";
             query.append(" ("+concatenatedSemesters+") ").append(" AND ");
             query. append(GeneralQuerysConstants.CLAUSULE_H_H_S_SEX).append(" ('"+sex+"') ").append("GROUP BY carrera, semestre, sexo ORDER BY carrera, semestre, sexo;");
-            System.out.println("Carrera, semestre, sexo (Especifica al menos uno): "+"\n\n\n"+query+"\n\n\n");
+            System.out.println("Carrera, semestre, sexo (Especifica al menos uno): "+"\n"+query+"\n\n");
             return query.toString();
         }else
-        //carrera, semestre, no sexo esta
+        //carrera + semestre
         if(request.getMajor().getMajors().size()>0 && request.getSemester().getSemesters().size()>0 && request.getSexo().isEmpty()){
             query.append("SELECT ").append("carrera, semestre, "+GeneralQuerysConstants.FILTERS_COUNT_HOUSE_HOULD_SERVICES);
             query.append(" FROM ").append(String.join(", ", tables));
@@ -157,46 +260,54 @@ public class HouseHoldServicesService {
             query.append(" ("+concatenatedMajors+") ").append(" AND ").append(GeneralQuerysConstants.CLAUSULE_H_H_S_S);
             String concatenatedSemesters = "'" + String.join("', '", semesters) + "'";
             query.append(" ("+concatenatedSemesters+") ").append("GROUP BY carrera, semestre ORDER BY carrera, semestre;");
-            System.out.println("carrera, semestre, no sexo: "+"\n\n\n"+query+"\n\n\n");
+            System.out.println("carrera, semestre, no sexo: "+"\n"+query+"\n\n");
             return query.toString();
         }else 
-        //carreras, no semestres, sexo
-        if(request.getMajor().getMajors().size()>0 && request.getSemester().getSemesters().size()>0 && !request.getSexo().isEmpty()){
+        //carreras + sexo
+        if(request.getMajor().getMajors().size()>0 && request.getSemester().getSemesters().size()<=0 && !request.getSexo().isEmpty()){
             query.append("SELECT ").append("carrera, sexo, "+GeneralQuerysConstants.FILTERS_COUNT_HOUSE_HOULD_SERVICES);
             query.append(" FROM ").append(String.join(", ", tables));
             query.append(GeneralQuerysConstants.CLAUSULE_WHERE_H_H_S_C);
             String concatenatedMajors = "'" + String.join("', '", majors) + "'";
             query.append(" ("+concatenatedMajors+") ").append(" AND ");
             query. append(GeneralQuerysConstants.CLAUSULE_H_H_S_SEX).append(" ('"+sex+"') ").append("GROUP BY carrera, sexo ORDER BY carrera, sexo;");
-            System.out.println("carreras, no semestres, sexo: "+"\n\n\n"+query+"\n\n\n");
+            System.out.println("carreras + sexo: "+"\n"+query+"\n\n");
             return query.toString();
         }else
-        //carrera, no semestre, no sexo
+        //carrera
         if(request.getMajor().getMajors().size()>0 && request.getSemester().getSemesters().size()<=0 && request.getSexo().isEmpty()){
             query.append("SELECT ").append(" carrera, "+GeneralQuerysConstants.FILTERS_COUNT_HOUSE_HOULD_SERVICES);
             query.append(" FROM ").append(String.join(", ", tables));
             query.append(GeneralQuerysConstants.CLAUSULE_WHERE_H_H_S_C);
             String concatenatedFilters = "'" + String.join("', '", majors) + "'";
             query.append(" ("+concatenatedFilters+") ").append(" GROUP BY carrera ORDER BY carrera;");
-            System.out.println("carrera, no semestre, no sexo: "+"\n\n\n"+query+"\n\n\n");
+            System.out.println("carreras: "+"\n"+query+"\n\n");
             return query.toString();
         }else
-        //no carreras, semestres, sexo
-        if(request.getMajor().getMajors().size()>0 && request.getSemester().getSemesters().size()>0 && !request.getSexo().isEmpty()){
+        //semestres + sexo
+        if(request.getMajor().getMajors().size()<=0 && request.getSemester().getSemesters().size()>0 && !request.getSexo().isEmpty()){
             query.append("SELECT ").append("semestre, sexo, "+GeneralQuerysConstants.FILTERS_COUNT_HOUSE_HOULD_SERVICES);
             query.append(" FROM ").append(String.join(", ", tables)).append(" WHERE ").append(GeneralQuerysConstants.CLAUSULE_H_H_S_S);
             String concatenatedSemesters = "'" + String.join("', '", semesters) + "'";
             query.append(" ("+concatenatedSemesters+") ").append(" AND ");
             query. append(GeneralQuerysConstants.CLAUSULE_H_H_S_SEX).append(" ('"+sex+"') ").append("GROUP BY semestre, sexo ORDER BY semestre, sexo;");
-            System.out.println("no carreras, semestres, sexo: "+"\n\n\n"+query+"\n\n\n");
+            System.out.println("semestres + sexo: "+"\n"+query+"\n\n");
             return query.toString();
         }else
-        //no carreras, no semestres, sexo
-        if(request.getMajor().getMajors().size()>0 && request.getSemester().getSemesters().size()>0 && !request.getSexo().isEmpty()){
+        //sexo
+        if(request.getMajor().getMajors().size()<=0 && request.getSemester().getSemesters().size()<=0 && !request.getSexo().isEmpty()){
             query.append("SELECT ").append("sexo, "+GeneralQuerysConstants.FILTERS_COUNT_HOUSE_HOULD_SERVICES);
             query.append(" FROM ").append(String.join(", ", tables)).append(" WHERE ");
             query. append(GeneralQuerysConstants.CLAUSULE_H_H_S_SEX).append(" ('"+sex+"') ").append("GROUP BY sexo ORDER BY sexo;");
-            System.out.println("no carreras, no semestres, sexo: "+"\n\n\n"+query+"\n\n\n");
+            System.out.println("sexo: "+"\n"+query+"\n\n");
+            return query.toString();
+        }else
+        if(request.getMajor().getMajors().size()<=0 && request.getSemester().getSemesters().size()>0 && request.getSexo().isEmpty()){
+            query.append("SELECT ").append("semestre, "+GeneralQuerysConstants.FILTERS_COUNT_HOUSE_HOULD_SERVICES);
+            query.append(" FROM ").append(String.join(", ", tables)).append(" WHERE ");
+            String concatenatedSemesters = "'" + String.join("', '", semesters) + "'";
+            query. append(GeneralQuerysConstants.CLAUSULE_H_H_S_S).append(" ("+concatenatedSemesters+") ").append("GROUP BY semestre ORDER BY semestre;");
+            System.out.println("semestres: "+"\n"+query+"\n\n");
             return query.toString();
         }
         
