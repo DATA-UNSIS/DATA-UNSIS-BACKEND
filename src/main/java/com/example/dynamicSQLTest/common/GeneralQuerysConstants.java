@@ -41,5 +41,8 @@ public class GeneralQuerysConstants {
     //Filtro por carrera
     public static final String CLAUSULE_WHERE_H_H_S_C = " WHERE carrera IN ";
     //Filtro por semestre
-    public static final String CLAUSULE_WHERE_H_H_S_S = " WHERE semestre IN ";
+    public static final String CLAUSULE_H_H_S_S = " semestre IN ";
+    //Filtro por sexo
+    public static final String CLAUSULE_H_H_S_SEX = " sexo IN ";
+
 }
