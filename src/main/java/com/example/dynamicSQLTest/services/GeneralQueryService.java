@@ -1,5 +1,6 @@
 package com.example.dynamicSQLTest.services;
 
+import com.example.dynamicSQLTest.services.generalServices.CivilStateService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +16,8 @@ public class GeneralQueryService {
 
     @Autowired
     private ScholarShipsRequestedService scholarShipsRequestedService;
+    @Autowired
+    private CivilStateService civilStateService;
 
     private QueryResponse results;
 
@@ -32,6 +35,7 @@ public class GeneralQueryService {
             case ETitles.HOUSEHOLD_SERVICES :
                 break;
             case ETitles.CIVIL_STATE :
+                results = civilStateService.executeNativeQuery(ETitles.CIVIL_STATE);
                 break;
         }
 
