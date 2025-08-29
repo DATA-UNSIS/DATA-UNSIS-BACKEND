@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import com.example.dynamicSQLTest.enums.ETitles;
 import com.example.dynamicSQLTest.DTOs.request.GeneralQueryRequest;
 import com.example.dynamicSQLTest.DTOs.response.QueryResponse;
+import com.example.dynamicSQLTest.services.generalServices.HouseHoldServicesService;
 import com.example.dynamicSQLTest.services.generalServices.ScholarShipsRequestedService;
 
 import io.micrometer.common.lang.NonNull;
@@ -18,6 +19,9 @@ public class GeneralQueryService {
     private ScholarShipsRequestedService scholarShipsRequestedService;
     @Autowired
     private CivilStateService civilStateService;
+
+    @Autowired
+    private HouseHoldServicesService houseHoldServicesService;
 
     private QueryResponse results;
 
@@ -33,6 +37,7 @@ public class GeneralQueryService {
                 results = scholarShipsRequestedService.executeNativeQuery(ETitles.SCHOLARSHIPS_REQUESTED);
                 break;
             case ETitles.HOUSEHOLD_SERVICES :
+                results = houseHoldServicesService.executeNativeQuery(ETitles.HOUSEHOLD_SERVICES, request);
                 break;
             case ETitles.CIVIL_STATE :
                 results = civilStateService.executeNativeQuery(ETitles.CIVIL_STATE);
