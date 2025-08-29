@@ -10,4 +10,9 @@ public class GeneralQuerysConstants {
                         "       COUNT(*) FILTER (WHERE semillas_talento = true)     AS total_semillas_talento," + 
                         "       COUNT(*) FILTER (WHERE otro IS NOT NULL)            AS total_otro" +
                         "       FROM becas;";
+
+    public static final String COUNT_MAJOR_DISTRIBUTION = "SELECT carrera, COUNT(*) AS value FROM alumnos ";
+    public static final String GROUP_BY_MAJOR_DISTRIBUTION = "GROUP BY carrera";
+    public static final String SEXO_CONDITION = "WHERE sexo =:paramSexo ";
+    public static final String SEMESTER_CONDITION = "semestre =:";
 }
