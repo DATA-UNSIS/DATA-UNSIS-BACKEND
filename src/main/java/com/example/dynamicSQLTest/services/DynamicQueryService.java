@@ -549,6 +549,7 @@ public class DynamicQueryService {
                 nativeQuery.setParameter(entry.getKey(), entry.getValue());
             }
 
+            @SuppressWarnings("unchecked")
             List<Object[]> results = nativeQuery.getResultList();
 
             if (results.isEmpty()) {
