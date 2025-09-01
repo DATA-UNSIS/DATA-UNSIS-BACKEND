@@ -57,5 +57,4 @@ public class GeneralQuerysConstants {
             "count(*) FILTER (WHERE estado_civil = 'Padre/Madre soltero(a)') AS total_padre_o_madre_soltero, " +
             "count(*) FILTER (WHERE estado_civil NOT IN ('Soltero', 'Casado', 'Divorciado', 'Unión Libre', 'Padre/Madre soltero(a)')) AS total_otro";
 
-    public static final String CIVIL_STATES =
 }
