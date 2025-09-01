@@ -2,62 +2,67 @@ package com.example.dynamicSQLTest.services.generalServices;
 
 import com.example.dynamicSQLTest.DTOs.request.GeneralQueryRequest;
 import com.example.dynamicSQLTest.DTOs.response.QueryResponse;
-import com.example.dynamicSQLTest.DTOs.utils.DataDTO;
+import com.example.dynamicSQLTest.builders.CivilStateQueryBuilder;
 import com.example.dynamicSQLTest.common.GeneralQuerysConstants;
-import com.example.dynamicSQLTest.enums.ECivilStates;
+import com.example.dynamicSQLTest.enums.ETitles;
+import com.example.dynamicSQLTest.processors.CivilStateResultProcessor;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.Query;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+
 
 @Service
+@Slf4j
 public class CivilStateService {
-    @PersistenceContext
-    private EntityManager em;
 
-    public QueryResponse executeNativeQuery(GeneralQueryRequest request) {
-        QueryResponse queryResponse = new QueryResponse();
-        DataDTO dataDto = new DataDTO();
-        Query nativeQuery = null;
-        String compoundQuery;
-        Map<String, Object> dataList = new HashMap<>();
+    @PersistenceContext
+    private EntityManager entityManager;
+
+    @Autowired
+    private CivilStateQueryBuilder queryBuilder;
+
+    @Autowired
+    private CivilStateResultProcessor resultProcessor;
+
+    public QueryResponse executeNativeQuery(ETitles title, GeneralQueryRequest request) {
+        QueryResponse response = new QueryResponse();
+        response.setTitle(title);
 
         try {
-            if (request.getMajor().getMajors() == null && request.getSemester().getSemesters() == null && request.getSexo() == "") {
-                nativeQuery = em.createNativeQuery(GeneralQuerysConstants.COUNT_CIVIL_STATE);
-                Object[] result = (Object[]) nativeQuery.getSingleResult();
+            String queryString = queryBuilder.buildQuery(request);
 
-                List<String> columnNames = getColumnNames();
+            Query query = entityManager.createNativeQuery(queryString);
+            setQueryParameters(query, request);
 
-                Map<String, Object> civilStateCounts = new LinkedHashMap<>();
-                for (int i = 0; i < result.length; i++) {
-                    String columnName = columnNames.get(i);
-                    String civilStateKey = convertColumnNameToCivilState(columnName);
-                    civilStateCounts.put(civilStateKey, ((Number) result[i]).longValue());
-                }
-            } else {
+            @SuppressWarnings("unchecked")
+            List<Object[]> resultList = query.getResultList();
 
-            }
+            response.setData(resultProcessor.processResults(resultList, request));
 
+        } catch (Exception e) {
+            throw new RuntimeException("Civil state query execution failed: " + e.getMessage(), e);
         }
+
+        return response;
     }
 
-    private List<String> getColumnNames() {
-        return Arrays.asList("total_solteros", "total_casados", "total_divorciados",
-                "total_union_libre", "total_padre_o_madre_soltero", "total_otro");
-    }
-
-    private String convertColumnNameToCivilState(String columnName) {
-        switch (columnName) {
-            case "total_solteros": return ECivilStates.SOLTERO.toString();
-            case "total_casados": return ECivilStates.CASADO.toString();
-            case "total_divorciados": return ECivilStates.DIVORCIADO.toString();
-            case "total_union_libre": return ECivilStates.UNION_LIBRE.toString();
-            case "total_padre_o_madre_soltero": return ECivilStates.PADRE_MADRE_SOLTERO.toString();
-            case "total_otro": return ECivilStates.OTRO.toString();
-            default: return columnName;
+    private void setQueryParameters(Query query, GeneralQueryRequest request) {
+        if (request.getMajors() != null && !request.getMajors().isEmpty()) {
+            query.setParameter("majors", request.getMajors());
+        }
+        if (request.getSemesters() != null && !request.getSemesters().isEmpty()) {
+            query.setParameter("semesters", request.getSemesters());
+        }
+        if (request.getSexo() != null && !request.getSexo().isEmpty()) {
+            query.setParameter("sexo", request.getSexo());
         }
     }
 }

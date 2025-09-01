@@ -43,7 +43,7 @@ public class GeneralQueryService {
                 results = houseHoldServicesService.executeNativeQuery(ETitles.HOUSEHOLD_SERVICES, request);
                 break;
             case ETitles.CIVIL_STATE :
-                results = civilStateService.executeNativeQuery(ETitles.CIVIL_STATE);
+                results = civilStateService.executeNativeQuery(ETitles.CIVIL_STATE, request);
                 break;
         }
 
