@@ -6,6 +6,8 @@ import org.springframework.stereotype.Component;
 
 import java.util.*;
 
+import static com.example.dynamicSQLTest.common.Constants.civilStates;
+
 @Slf4j
 @Component
 public class CivilStateResultProcessor {
@@ -23,11 +25,6 @@ public class CivilStateResultProcessor {
             return createEmptyResult();
         }
 
-        String[] civilStates = {
-                "total_solteros", "total_casados", "total_divorciados",
-                "total_union_libre", "total_padre_o_madre_soltero", "total_otro"
-        };
-
         for (int i = 0; i < civilStates.length && i < row.length; i++) {
             data.put(civilStates[i], row[i] != null ? row[i] : 0);
         }
@@ -38,11 +35,6 @@ public class CivilStateResultProcessor {
     private Map<String, Object> createEmptyResult() {
         Map<String, Object> emptyData = new LinkedHashMap<>();
         Map<String, Object> emptyCivilState = new LinkedHashMap<>();
-
-        String[] civilStates = {
-                "total_solteros", "total_casados", "total_divorciados",
-                "total_union_libre", "total_padre_o_madre_soltero", "total_otro"
-        };
 
         for (String state : civilStates) {
             emptyCivilState.put(state, 0);

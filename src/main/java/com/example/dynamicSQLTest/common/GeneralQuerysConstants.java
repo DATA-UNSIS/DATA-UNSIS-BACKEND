@@ -50,12 +50,12 @@ public class GeneralQuerysConstants {
     //Filtro por sexo
     public static final String CLAUSULE_H_H_S_SEX = " sexo IN ";
 
-    public static final String COUNT_CIVIL_STATE = "SELECT " +
-            "count(*) FILTER (WHERE estado_civil = 'Soltero') AS total_solteros, " +
+    public static final String COUNT_CIVIL_STATE = "count(*) FILTER (WHERE estado_civil = 'Soltero') AS total_solteros, " +
             "count(*) FILTER (WHERE estado_civil = 'Casado') AS total_casados, " +
             "count(*) FILTER (WHERE estado_civil = 'Divorciado') AS total_divorciados, " +
             "count(*) FILTER (WHERE estado_civil = 'Unión Libre') AS total_union_libre, " +
             "count(*) FILTER (WHERE estado_civil = 'Padre/Madre soltero(a)') AS total_padre_o_madre_soltero, " +
-            "count(*) FILTER (WHERE estado_civil NOT IN ('Soltero', 'Casado', 'Divorciado', 'Unión Libre', 'Padre/Madre soltero(a)')) AS total_otro " +
-            "FROM alumnos";
+            "count(*) FILTER (WHERE estado_civil NOT IN ('Soltero', 'Casado', 'Divorciado', 'Unión Libre', 'Padre/Madre soltero(a)')) AS total_otro";
+
+    public static final String CIVIL_STATES =
 }
