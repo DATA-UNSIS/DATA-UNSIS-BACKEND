@@ -1,10 +1,10 @@
 package com.example.dynamicSQLTest.services.generalServices;
 
+import com.example.dynamicSQLTest.DTOs.request.GeneralQueryRequest;
 import com.example.dynamicSQLTest.DTOs.response.QueryResponse;
 import com.example.dynamicSQLTest.DTOs.utils.DataDTO;
 import com.example.dynamicSQLTest.common.GeneralQuerysConstants;
 import com.example.dynamicSQLTest.enums.ECivilStates;
-import com.example.dynamicSQLTest.enums.ETitles;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.Query;
@@ -17,31 +17,30 @@ public class CivilStateService {
     @PersistenceContext
     private EntityManager em;
 
-    public QueryResponse executeNativeQuery(ETitles title) {
+    public QueryResponse executeNativeQuery(GeneralQueryRequest request) {
+        QueryResponse queryResponse = new QueryResponse();
+        DataDTO dataDto = new DataDTO();
+        Query nativeQuery = null;
+        String compoundQuery;
+        Map<String, Object> dataList = new HashMap<>();
+
         try {
-            Query query = em.createNativeQuery(GeneralQuerysConstants.COUNT_CIVIL_STATE);
-            Object[] result = (Object[]) query.getSingleResult();
+            if (request.getMajor().getMajors() == null && request.getSemester().getSemesters() == null && request.getSexo() == "") {
+                nativeQuery = em.createNativeQuery(GeneralQuerysConstants.COUNT_CIVIL_STATE);
+                Object[] result = (Object[]) nativeQuery.getSingleResult();
 
-            List<String> columnNames = getColumnNames();
+                List<String> columnNames = getColumnNames();
 
-            Map<String, Object> civilStateCounts = new LinkedHashMap<>();
-            for (int i = 0; i < result.length; i++) {
-                String columnName = columnNames.get(i);
-                String civilStateKey = convertColumnNameToCivilState(columnName);
-                civilStateCounts.put(civilStateKey, ((Number) result[i]).longValue());
+                Map<String, Object> civilStateCounts = new LinkedHashMap<>();
+                for (int i = 0; i < result.length; i++) {
+                    String columnName = columnNames.get(i);
+                    String civilStateKey = convertColumnNameToCivilState(columnName);
+                    civilStateCounts.put(civilStateKey, ((Number) result[i]).longValue());
+                }
+            } else {
+
             }
 
-            DataDTO dataDto = new DataDTO();
-            dataDto.setData(civilStateCounts);
-
-            QueryResponse response = new QueryResponse();
-            response.setTitle(title);
-            response.setData(dataDto);
-
-            return response;
-
-        } catch (Exception ex) {
-            throw new RuntimeException("Query execution failed: " + ex.getMessage(), ex);
         }
     }
 

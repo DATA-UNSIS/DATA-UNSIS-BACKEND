@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 import com.example.dynamicSQLTest.enums.EScholarships;
 import com.example.dynamicSQLTest.enums.ETitles;
 import com.example.dynamicSQLTest.DTOs.response.QueryResponse;
-import com.example.dynamicSQLTest.DTOs.utils.DataDTO;
 import com.example.dynamicSQLTest.common.GeneralQuerysConstants;
 
 import jakarta.persistence.EntityManager;
@@ -23,7 +22,6 @@ public class ScholarShipsRequestedService {
     //Se consultan cuantas personas solicitaron cada una de las becas posibles
     public QueryResponse executeNativeQuery(ETitles title) {
         QueryResponse results = new QueryResponse();
-        DataDTO dataDto = new DataDTO(); 
         Map<String, Object> dataList = new HashMap<>();
         try {
             Query nativeQuery = entityManager.createNativeQuery(GeneralQuerysConstants.COUNT_SCHOLARSHIPS_REJECTED);
@@ -34,8 +32,7 @@ public class ScholarShipsRequestedService {
                 dataList.put(EScholarships.values()[i].toString(), result[i]); 
             }
             results.setTitle(title);
-            dataDto.setData(dataList);
-            results.setData(dataDto);  
+            results.setData(dataList);  
             return results;
 
         } catch (Exception e) {
