@@ -3,7 +3,6 @@ package com.example.dynamicSQLTest.services.generalServices;
 import com.example.dynamicSQLTest.DTOs.request.GeneralQueryRequest;
 import com.example.dynamicSQLTest.DTOs.response.QueryResponse;
 import com.example.dynamicSQLTest.builders.CivilStateQueryBuilder;
-import com.example.dynamicSQLTest.common.GeneralQuerysConstants;
 import com.example.dynamicSQLTest.enums.ETitles;
 import com.example.dynamicSQLTest.processors.CivilStateResultProcessor;
 import jakarta.persistence.EntityManager;
@@ -13,10 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Arrays;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 
 
 @Service
