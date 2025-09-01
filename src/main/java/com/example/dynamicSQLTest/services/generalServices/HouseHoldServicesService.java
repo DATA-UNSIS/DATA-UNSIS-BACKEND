@@ -35,9 +35,12 @@ public class HouseHoldServicesService {
             if(request.getMajor().getMajors().size()<=0 && request.getSemester().getSemesters().size()<=0 && request.getSexo().isEmpty()){
                 nativeQuery = entityManager.createNativeQuery(GeneralQuerysConstants.COUNT_HOUSE_HOULD_SERVICES);
                 Object[] result = (Object[]) nativeQuery.getSingleResult();
+                results.setTitle(title);
                 for(int i=0; i<result.length; i++){
                     dataList.put(EHouseholdServices.values()[i].toString(), result[i]);
                 }
+                results.setData(dataList);
+                return results;
             }else{
                 compoundQuery=getCompoundQuery(request);
                 nativeQuery = entityManager.createNativeQuery(compoundQuery);
@@ -57,38 +60,31 @@ public class HouseHoldServicesService {
 
     private QueryResponse getResultsData(GeneralQueryRequest request, DataDTO dataDto, Map<String, Object> dataList, List<Object[]> resultList, QueryResponse results){
                 if(request.getMajor().getMajors().size()>0 && request.getSemester().getSemesters().size()>0 && !request.getSexo().isEmpty()){
-                    dataDto.setData(queryProcessMajorSemesterSex(resultList, dataList));
-                    results.setData(dataDto);
+                    results.setData(queryProcessMajorSemesterSex(resultList, dataList));
                     return results;
                 }else
                 if(request.getMajor().getMajors().size()>0 && request.getSemester().getSemesters().size()>0 && request.getSexo().isEmpty()){
-                    dataDto.setData(queryProcessMajorSemester(resultList, dataList));
-                    results.setData(dataDto);
+                    results.setData(queryProcessMajorSemester(resultList, dataList));
                     return results;
                 }else
                 if(request.getMajor().getMajors().size()>0 && request.getSemester().getSemesters().size()<=0 && !request.getSexo().isEmpty()){
-                    dataDto.setData(queryProcessMajorSex(resultList, dataList));
-                    results.setData(dataDto);
+                    results.setData(queryProcessMajorSex(resultList, dataList));
                     return results;
                 }else
                 if(request.getMajor().getMajors().size()>0 && request.getSemester().getSemesters().size()<=0 && request.getSexo().isEmpty()){
-                    dataDto.setData(queryProcessMajor(resultList, dataList));
-                    results.setData(dataDto);
+                    results.setData(queryProcessMajor(resultList, dataList));
                     return results;
                 }else
                 if(request.getMajor().getMajors().size()<=0 && request.getSemester().getSemesters().size()>0 && !request.getSexo().isEmpty()){
-                    dataDto.setData(queryProcessSemesterSex(resultList, dataList));
-                    results.setData(dataDto);
+                    results.setData(queryProcessSemesterSex(resultList, dataList));
                     return results;
                 }else
                 if(request.getMajor().getMajors().size()<=0 && request.getSemester().getSemesters().size()<=0 && !request.getSexo().isEmpty()){
-                    dataDto.setData(queryProcessSex(resultList, dataList));
-                    results.setData(dataDto);
+                    results.setData(queryProcessSex(resultList, dataList));
                     return results;
                 }else
                 if(request.getMajor().getMajors().size()<=0 && request.getSemester().getSemesters().size()>0 && request.getSexo().isEmpty()){
-                    dataDto.setData(queryProcessSemester(resultList, dataList));
-                    results.setData(dataDto);
+                    results.setData(queryProcessSemester(resultList, dataList));
                     return results;
                 }
 

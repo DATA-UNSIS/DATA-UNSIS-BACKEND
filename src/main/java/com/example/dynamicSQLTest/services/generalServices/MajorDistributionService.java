@@ -2,7 +2,6 @@ package com.example.dynamicSQLTest.services.generalServices;
 
 import com.example.dynamicSQLTest.DTOs.request.GeneralQueryRequest;
 import com.example.dynamicSQLTest.DTOs.response.QueryResponse;
-import com.example.dynamicSQLTest.DTOs.utils.DataDTO;
 import com.example.dynamicSQLTest.common.GeneralQuerysConstants;
 import com.example.dynamicSQLTest.enums.ETitles;
 import jakarta.persistence.EntityManager;
@@ -36,12 +35,12 @@ public class MajorDistributionService {
         query.append(GeneralQuerysConstants.GROUP_BY_MAJOR_DISTRIBUTION);
         try {
             Query finalQuery = entityManager.createNativeQuery(query.toString());
+            @SuppressWarnings("unchecked")
             List<Object[]> results = finalQuery.getResultList();
             if(!results.isEmpty()){
                 QueryResponse queryResponse = new QueryResponse();
                 queryResponse.setTitle(ETitles.MAJOR_DISTRIBUTION);
-                DataDTO dataDTO = getDataParseDTO(results);
-                queryResponse.setData(dataDTO);
+                queryResponse.setData(getDataParseDTO(results));
                 return queryResponse;
             }else return null;
         } catch (Exception e) {
@@ -51,14 +50,12 @@ public class MajorDistributionService {
         }
     }
 
-    private DataDTO getDataParseDTO(List<Object[]> results){
+    private Map<String,Object> getDataParseDTO(List<Object[]> results){
         Map<String,Object> mapResults = new HashMap<>();
-        DataDTO dataDTO = new DataDTO();
         for (Object[] row : results) {
             mapResults.put((String) row[0],row[1]);
         }
-        dataDTO.setData(mapResults);
-        return dataDTO;
+        return mapResults;
     }
 
     private QueryResponse executeQueryWithConditions(StringBuilder query, Map<String, Object> parameters){
@@ -87,13 +84,13 @@ public class MajorDistributionService {
                 finalQuery.setParameter(entry.getKey(), entry.getValue());
             }
 
+            @SuppressWarnings("unchecked")
             List<Object[]> results = finalQuery.getResultList();
 
             if(!results.isEmpty()){
                 QueryResponse queryResponse = new QueryResponse();
                 queryResponse.setTitle(ETitles.MAJOR_DISTRIBUTION);
-                DataDTO dataDTO = getDataParseDTO(results);
-                queryResponse.setData(dataDTO);
+                queryResponse.setData(getDataParseDTO(results));
                 return queryResponse;
             }else return null;
 
