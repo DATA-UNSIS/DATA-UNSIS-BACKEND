@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 
 import com.example.dynamicSQLTest.DTOs.request.GeneralQueryRequest;
 import com.example.dynamicSQLTest.DTOs.response.QueryResponse;
-import com.example.dynamicSQLTest.DTOs.utils.DataDTO;
 import com.example.dynamicSQLTest.common.GeneralQuerysConstants;
 import com.example.dynamicSQLTest.enums.EHouseholdServices;
 import com.example.dynamicSQLTest.enums.ETitles;
@@ -25,14 +24,13 @@ public class HouseHoldServicesService {
 
     public QueryResponse executeNativeQuery(ETitles title, GeneralQueryRequest request){
         QueryResponse results = new QueryResponse();
-        DataDTO dataDto = new DataDTO(); 
         Query nativeQuery = null;
         String compoundQuery;
 
         Map<String, Object> dataList = new HashMap<>();
         try{
             //todas las carreras, todos los semestres y todos los sexos (No especifica ninguno)
-            if(request.getMajor().getMajors().size()<=0 && request.getSemester().getSemesters().size()<=0 && request.getSexo().isEmpty()){
+            if(request.getMajors().size()<=0 && request.getSemesters().size()<=0 && request.getSexo().isEmpty()){
                 nativeQuery = entityManager.createNativeQuery(GeneralQuerysConstants.COUNT_HOUSE_HOULD_SERVICES);
                 Object[] result = (Object[]) nativeQuery.getSingleResult();
                 results.setTitle(title);
@@ -48,7 +46,7 @@ public class HouseHoldServicesService {
                 @SuppressWarnings("unchecked")
                 List<Object[]> resultList = nativeQuery.getResultList();
                 results.setTitle(title);
-                results.setData(getResultsData(request, dataDto, dataList, resultList, results).getData());
+                results.setData(getResultsData(request, dataList, resultList, results).getData());
             }
         }catch(Exception e){
             System.err.println("Query execution error: " + e.getMessage());
@@ -58,32 +56,32 @@ public class HouseHoldServicesService {
         return results;
     }
 
-    private QueryResponse getResultsData(GeneralQueryRequest request, DataDTO dataDto, Map<String, Object> dataList, List<Object[]> resultList, QueryResponse results){
-                if(request.getMajor().getMajors().size()>0 && request.getSemester().getSemesters().size()>0 && !request.getSexo().isEmpty()){
+    private QueryResponse getResultsData(GeneralQueryRequest request, Map<String, Object> dataList, List<Object[]> resultList, QueryResponse results){
+                if(request.getMajors().size()>0 && request.getSemesters().size()>0 && !request.getSexo().isEmpty()){
                     results.setData(queryProcessMajorSemesterSex(resultList, dataList));
                     return results;
                 }else
-                if(request.getMajor().getMajors().size()>0 && request.getSemester().getSemesters().size()>0 && request.getSexo().isEmpty()){
+                if(request.getMajors().size()>0 && request.getSemesters().size()>0 && request.getSexo().isEmpty()){
                     results.setData(queryProcessMajorSemester(resultList, dataList));
                     return results;
                 }else
-                if(request.getMajor().getMajors().size()>0 && request.getSemester().getSemesters().size()<=0 && !request.getSexo().isEmpty()){
+                if(request.getMajors().size()>0 && request.getSemesters().size()<=0 && !request.getSexo().isEmpty()){
                     results.setData(queryProcessMajorSex(resultList, dataList));
                     return results;
                 }else
-                if(request.getMajor().getMajors().size()>0 && request.getSemester().getSemesters().size()<=0 && request.getSexo().isEmpty()){
+                if(request.getMajors().size()>0 && request.getSemesters().size()<=0 && request.getSexo().isEmpty()){
                     results.setData(queryProcessMajor(resultList, dataList));
                     return results;
                 }else
-                if(request.getMajor().getMajors().size()<=0 && request.getSemester().getSemesters().size()>0 && !request.getSexo().isEmpty()){
+                if(request.getMajors().size()<=0 && request.getSemesters().size()>0 && !request.getSexo().isEmpty()){
                     results.setData(queryProcessSemesterSex(resultList, dataList));
                     return results;
                 }else
-                if(request.getMajor().getMajors().size()<=0 && request.getSemester().getSemesters().size()<=0 && !request.getSexo().isEmpty()){
+                if(request.getMajors().size()<=0 && request.getSemesters().size()<=0 && !request.getSexo().isEmpty()){
                     results.setData(queryProcessSex(resultList, dataList));
                     return results;
                 }else
-                if(request.getMajor().getMajors().size()<=0 && request.getSemester().getSemesters().size()>0 && request.getSexo().isEmpty()){
+                if(request.getMajors().size()<=0 && request.getSemesters().size()>0 && request.getSexo().isEmpty()){
                     results.setData(queryProcessSemester(resultList, dataList));
                     return results;
                 }
@@ -230,12 +228,13 @@ public class HouseHoldServicesService {
     private String getCompoundQuery(GeneralQueryRequest request){
         StringBuilder query = new StringBuilder();
         List<String> tables = Arrays.asList("servicios", "alumnos");
-        List<String> majors = request.getMajor().getMajors();
-        List<String> semesters = request.getSemester().getSemesters();
+        List<String> majors = request.getMajors();
+        List<String> semesters = request.getSemesters();
         String sex = request.getSexo();
+        
 
         //Carrera + semestre + sexo (Especifica al menos uno)
-        if(request.getMajor().getMajors().size()>0 && request.getSemester().getSemesters().size()>0 && !request.getSexo().isEmpty()){
+        if(request.getMajors().size()>0 && request.getSemesters().size()>0 && !request.getSexo().isEmpty()){
             query.append("SELECT ").append("carrera, semestre, sexo, "+GeneralQuerysConstants.FILTERS_COUNT_HOUSE_HOULD_SERVICES);
             query.append(" FROM ").append(String.join(", ", tables));
             query.append(GeneralQuerysConstants.CLAUSULE_WHERE_H_H_S_C);
@@ -248,7 +247,7 @@ public class HouseHoldServicesService {
             return query.toString();
         }else
         //carrera + semestre
-        if(request.getMajor().getMajors().size()>0 && request.getSemester().getSemesters().size()>0 && request.getSexo().isEmpty()){
+        if(request.getMajors().size()>0 && request.getSemesters().size()>0 && request.getSexo().isEmpty()){
             query.append("SELECT ").append("carrera, semestre, "+GeneralQuerysConstants.FILTERS_COUNT_HOUSE_HOULD_SERVICES);
             query.append(" FROM ").append(String.join(", ", tables));
             query.append(GeneralQuerysConstants.CLAUSULE_WHERE_H_H_S_C);
@@ -260,7 +259,7 @@ public class HouseHoldServicesService {
             return query.toString();
         }else 
         //carreras + sexo
-        if(request.getMajor().getMajors().size()>0 && request.getSemester().getSemesters().size()<=0 && !request.getSexo().isEmpty()){
+        if(request.getMajors().size()>0 && request.getSemesters().size()<=0 && !request.getSexo().isEmpty()){
             query.append("SELECT ").append("carrera, sexo, "+GeneralQuerysConstants.FILTERS_COUNT_HOUSE_HOULD_SERVICES);
             query.append(" FROM ").append(String.join(", ", tables));
             query.append(GeneralQuerysConstants.CLAUSULE_WHERE_H_H_S_C);
@@ -271,7 +270,7 @@ public class HouseHoldServicesService {
             return query.toString();
         }else
         //carrera
-        if(request.getMajor().getMajors().size()>0 && request.getSemester().getSemesters().size()<=0 && request.getSexo().isEmpty()){
+        if(request.getMajors().size()>0 && request.getSemesters().size()<=0 && request.getSexo().isEmpty()){
             query.append("SELECT ").append(" carrera, "+GeneralQuerysConstants.FILTERS_COUNT_HOUSE_HOULD_SERVICES);
             query.append(" FROM ").append(String.join(", ", tables));
             query.append(GeneralQuerysConstants.CLAUSULE_WHERE_H_H_S_C);
@@ -281,7 +280,7 @@ public class HouseHoldServicesService {
             return query.toString();
         }else
         //semestres + sexo
-        if(request.getMajor().getMajors().size()<=0 && request.getSemester().getSemesters().size()>0 && !request.getSexo().isEmpty()){
+        if(request.getMajors().size()<=0 && request.getSemesters().size()>0 && !request.getSexo().isEmpty()){
             query.append("SELECT ").append("semestre, sexo, "+GeneralQuerysConstants.FILTERS_COUNT_HOUSE_HOULD_SERVICES);
             query.append(" FROM ").append(String.join(", ", tables)).append(" WHERE ").append(GeneralQuerysConstants.CLAUSULE_H_H_S_S);
             String concatenatedSemesters = "'" + String.join("', '", semesters) + "'";
@@ -291,14 +290,14 @@ public class HouseHoldServicesService {
             return query.toString();
         }else
         //sexo
-        if(request.getMajor().getMajors().size()<=0 && request.getSemester().getSemesters().size()<=0 && !request.getSexo().isEmpty()){
+        if(request.getMajors().size()<=0 && request.getSemesters().size()<=0 && !request.getSexo().isEmpty()){
             query.append("SELECT ").append("sexo, "+GeneralQuerysConstants.FILTERS_COUNT_HOUSE_HOULD_SERVICES);
             query.append(" FROM ").append(String.join(", ", tables)).append(" WHERE ");
             query. append(GeneralQuerysConstants.CLAUSULE_H_H_S_SEX).append(" ('"+sex+"') ").append("GROUP BY sexo ORDER BY sexo;");
             System.out.println("sexo: "+"\n"+query+"\n\n");
             return query.toString();
         }else
-        if(request.getMajor().getMajors().size()<=0 && request.getSemester().getSemesters().size()>0 && request.getSexo().isEmpty()){
+        if(request.getMajors().size()<=0 && request.getSemesters().size()>0 && request.getSexo().isEmpty()){
             query.append("SELECT ").append("semestre, "+GeneralQuerysConstants.FILTERS_COUNT_HOUSE_HOULD_SERVICES);
             query.append(" FROM ").append(String.join(", ", tables)).append(" WHERE ");
             String concatenatedSemesters = "'" + String.join("', '", semesters) + "'";
