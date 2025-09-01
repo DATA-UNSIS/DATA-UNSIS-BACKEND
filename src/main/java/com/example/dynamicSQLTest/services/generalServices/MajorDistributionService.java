@@ -23,7 +23,7 @@ public class MajorDistributionService {
         Map<String, Object> parameters = new HashMap<>();
         StringBuilder finalQuery = new StringBuilder(GeneralQuerysConstants.COUNT_MAJOR_DISTRIBUTION);
 
-        if (generalQueryRequest.getSemester() != null || generalQueryRequest.getSexo() != null){
+        if (generalQueryRequest.getSemesters() != null || generalQueryRequest.getSexo() != null){
             parameters = getParameters(generalQueryRequest);
             return executeQueryWithConditions(finalQuery, parameters);
         } else {
@@ -104,8 +104,8 @@ public class MajorDistributionService {
     private Map<String, Object> getParameters(GeneralQueryRequest generalQueryRequest){
         Map<String, Object> parameters = new HashMap<>();
         if (generalQueryRequest.getSexo() != null) parameters.put("paramSexo", generalQueryRequest.getSexo());
-        if (generalQueryRequest.getSemester() != null) {
-            List<String> semesterValues = generalQueryRequest.getSemester().getSemesters();
+        if (generalQueryRequest.getSemesters() != null) {
+            List<String> semesterValues = generalQueryRequest.getSemesters();
             int paramCount = semesterValues.size();
             for (String value : semesterValues) {
                 parameters.put("param" + paramCount, value);
