@@ -4,6 +4,7 @@ import com.example.dynamicSQLTest.common.GeneralQuerysConstants;
 import com.example.dynamicSQLTest.enums.EHouseholdServices;
 import com.example.dynamicSQLTest.enums.EScholarships;
 import com.example.dynamicSQLTest.processors.TitlesLogicProcessor;
+import com.example.dynamicSQLTest.services.generalServices.EconomicLevelService;
 import com.example.dynamicSQLTest.services.generalServices.CivilStateService;
 import com.example.dynamicSQLTest.services.generalServices.MajorDistributionService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +28,8 @@ public class GeneralQueryService {
     @Autowired
     MajorDistributionService majorDistributionService;
     @Autowired
+    EconomicLevelService economicLevelService;
+    @Autowired
     private TitlesLogicProcessor titlesLogicProcessor;
 
     private QueryResponse results;
@@ -37,7 +40,8 @@ public class GeneralQueryService {
             case ETitles.MAJOR_DISTRIBUTION :
                 results = majorDistributionService.executeMajorDistributionQuery(request);
                 break;
-            case ETitles.ECONOMIC_LEVEL : 
+            case ETitles.ECONOMIC_LEVEL :
+                results = economicLevelService.executeEconomicLevelQuery(request);
                 break;
             case ETitles.SCHOLARSHIPS_REQUESTED :
                 tables = new ArrayList<>(Arrays.asList("becas", "alumnos"));
