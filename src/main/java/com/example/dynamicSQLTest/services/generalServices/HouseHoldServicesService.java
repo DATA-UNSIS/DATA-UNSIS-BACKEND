@@ -58,102 +58,41 @@ public class HouseHoldServicesService {
 
     private QueryResponse getResultsData(GeneralQueryRequest request, Map<String, Object> dataList, List<Object[]> resultList, QueryResponse results){
                 if(request.getMajors() != null && request.getSemesters() != null && request.getSexo() != null){
-                    results.setData(queryProcessMajorSemesterSex(resultList, dataList));
+                    results.setData(queryProcess(resultList, dataList));
                     return results;
                 }else
                 if(request.getMajors() != null && request.getSemesters() != null && request.getSexo() == null){
-                    results.setData(queryProcessMajorSemester(resultList, dataList));
+                    results.setData(queryProcess(resultList, dataList));
                     return results;
                 }else
                 if(request.getMajors() != null && request.getSemesters() == null && request.getSexo() != null){
-                    results.setData(queryProcessMajorSex(resultList, dataList));
+                    results.setData(queryProcess(resultList, dataList));
                     return results;
                 }else
                 if(request.getMajors() != null && request.getSemesters() == null && request.getSexo() == null){
-                    results.setData(queryProcessMajor(resultList, dataList));
+                    results.setData(queryProcess(resultList, dataList));
                     return results;
                 }else
                 if(request.getMajors() == null && request.getSemesters() != null && request.getSexo() != null){
-                    results.setData(queryProcessSemesterSex(resultList, dataList));
+                    results.setData(queryProcess(resultList, dataList));
                     return results;
                 }else
                 if(request.getMajors() == null && request.getSemesters() == null && request.getSexo() != null){
-                    results.setData(queryProcessSex(resultList, dataList));
+                    results.setData(queryProcess(resultList, dataList));
                     return results;
                 }else
                 if(request.getMajors() == null && request.getSemesters() != null && request.getSexo() == null){
-                    results.setData(queryProcessSemester(resultList, dataList));
+                    results.setData(queryProcess(resultList, dataList));
                     return results;
                 }
 
                 return results;
     }
-    //Carrera + semestre + sexo
-    @SuppressWarnings("unchecked")
-    private Map<String, Object> queryProcessMajorSemesterSex(List<Object[]> resultList, Map<String, Object> dataList) {
-        for (Object[] row : resultList) {
-            for (int i = 0; i < row.length; i++) {
-                dataList.put(EHouseholdServices.values()[i].toString(), row[i]);
-            }
-        }
-        return dataList;
-    }
-
-    //Carrera + semestre
-   private Map<String, Object> queryProcessMajorSemester(List<Object[]> resultList, Map<String, Object> dataList) {
-        for (Object[] row : resultList) {
-            for (int i = 0; i < row.length; i++) {
-                dataList.put(EHouseholdServices.values()[i].toString(), row[i]);
-            }
-        }
-        return dataList;
-    }
-
-      // Carrera + Sexo
-    private Map<String, Object> queryProcessMajorSex(List<Object[]> resultList, Map<String, Object> dataList){
-    for(Object[] row : resultList) {
-            for(int i = 0; i < row.length; i++) {
-                dataList.put(EHouseholdServices.values()[i].toString(), row[i]);
-            }
-        }
-        return dataList;
-    }
-
-    // Semestre + Sexo
-    private Map<String, Object> queryProcessSemesterSex(List<Object[]> resultList, Map<String, Object> dataList){
+   //Procesa los resultados de la consulta y los mapea al formato esperado
+    private Map<String, Object> queryProcess(List<Object[]> resultList, Map<String, Object> dataList){
         for(Object[] row : resultList) {
-            for(int i=0; i<row.length; i++){
-                dataList.put(EHouseholdServices.values()[i].toString(), row[i]);
-            }
-        }
-        return dataList;
-    }
-
-    // Solo Sexo
-    private Map<String, Object> queryProcessSex(List<Object[]> resultList, Map<String, Object> dataList){
-        for(Object[] row : resultList) {
-            for(int i=0; i<row.length; i++){
-                dataList.put(EHouseholdServices.values()[i].toString(), row[i]);
-            }
-        }
-        return dataList;
-    }
-
-    //solo semestres
-    private Map<String, Object> queryProcessSemester(List<Object[]> resultList, Map<String, Object> dataList){
-        for(Object[] row : resultList){
-            for(int i=0; i<row.length; i++){
-                dataList.put(EHouseholdServices.values()[i].toString(), row[i]);
-            }
-        }
-        return dataList;
-    }
-
-    //Solo carrera
-    private Map<String, Object> queryProcessMajor(List<Object[]> resultList, Map<String, Object> dataList){
-        for(Object[] row : resultList) {
-                    for(int i=1; i<row.length; i++){
-                        dataList.put(EHouseholdServices.values()[i-1].toString(), row[i]);
+                    for(int i=0; i<row.length; i++){
+                        dataList.put(EHouseholdServices.values()[i].toString(), row[i]);
                     }
                 }
         return dataList;
