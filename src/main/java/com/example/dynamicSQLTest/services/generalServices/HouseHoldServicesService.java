@@ -1,9 +1,6 @@
 package com.example.dynamicSQLTest.services.generalServices;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import org.springframework.stereotype.Service;
 
@@ -30,7 +27,7 @@ public class HouseHoldServicesService {
         Map<String, Object> dataList = new HashMap<>();
         try{
             //todas las carreras, todos los semestres y todos los sexos (No especifica ninguno == null)
-            if(request.getMajors() == null && request.getSemesters() == null && request.getSexo() == null){
+            if((request.getMajors() == null || request.getMajors().isEmpty()) && (request.getSemesters() == null || request.getSemesters().isEmpty()) && (request.getSexo() == null || request.getSexo().isEmpty())){
                 nativeQuery = entityManager.createNativeQuery(GeneralQuerysConstants.COUNT_HOUSE_HOULD_SERVICES);
                 Object[] result = (Object[]) nativeQuery.getSingleResult();
                 results.setTitle(title);
@@ -57,31 +54,31 @@ public class HouseHoldServicesService {
     }
 
     private QueryResponse getResultsData(GeneralQueryRequest request, Map<String, Object> dataList, List<Object[]> resultList, QueryResponse results){
-                if(request.getMajors() != null && request.getSemesters() != null && request.getSexo() != null){
+                if((request.getMajors() != null || !request.getMajors().isEmpty()) && (request.getSemesters() != null || !request.getSemesters().isEmpty()) && (request.getSexo() != null || !request.getSexo().isEmpty())){
                     results.setData(queryProcess(resultList, dataList));
                     return results;
                 }else
-                if(request.getMajors() != null && request.getSemesters() != null && request.getSexo() == null){
+                if((request.getMajors() != null || !request.getMajors().isEmpty()) && (request.getSemesters() != null || !request.getSemesters().isEmpty()) && (request.getSexo() == null || request.getSexo().isEmpty())){
                     results.setData(queryProcess(resultList, dataList));
                     return results;
                 }else
-                if(request.getMajors() != null && request.getSemesters() == null && request.getSexo() != null){
+                if((request.getMajors() != null || !request.getMajors().isEmpty()) && (request.getSemesters() == null || request.getSemesters().isEmpty()) && (request.getSexo() != null || !request.getSexo().isEmpty())){
                     results.setData(queryProcess(resultList, dataList));
                     return results;
                 }else
-                if(request.getMajors() != null && request.getSemesters() == null && request.getSexo() == null){
+                if((request.getMajors() != null || !request.getMajors().isEmpty()) && (request.getSemesters() == null || request.getSemesters().isEmpty()) && (request.getSexo() == null || request.getSexo().isEmpty())){
                     results.setData(queryProcess(resultList, dataList));
                     return results;
                 }else
-                if(request.getMajors() == null && request.getSemesters() != null && request.getSexo() != null){
+                if((request.getMajors() == null || request.getMajors().isEmpty()) && (request.getSemesters() != null || !request.getSemesters().isEmpty()) && (request.getSexo() != null || !request.getSexo().isEmpty())){
                     results.setData(queryProcess(resultList, dataList));
                     return results;
                 }else
-                if(request.getMajors() == null && request.getSemesters() == null && request.getSexo() != null){
+                if((request.getMajors() == null || request.getMajors().isEmpty()) && (request.getSemesters() == null || request.getSemesters().isEmpty()) && (request.getSexo() != null || !request.getSexo().isEmpty())){
                     results.setData(queryProcess(resultList, dataList));
                     return results;
                 }else
-                if(request.getMajors() == null && request.getSemesters() != null && request.getSexo() == null){
+                if((request.getMajors() == null || request.getMajors().isEmpty()) && (request.getSemesters() != null || request.getSemesters().isEmpty()) && (request.getSexo() == null || request.getSexo().isEmpty())){
                     results.setData(queryProcess(resultList, dataList));
                     return results;
                 }
@@ -101,13 +98,13 @@ public class HouseHoldServicesService {
     private String getCompoundQuery(GeneralQueryRequest request){
         StringBuilder query = new StringBuilder();
         List<String> tables = Arrays.asList("servicios", "alumnos");
-        List<String> majors = request.getMajors();
-        List<String> semesters = request.getSemesters();
+        List<String> majors = request.getMajors() != null ? request.getMajors() : Collections.emptyList();
+        List<String> semesters = request.getSemesters() != null ? request.getSemesters() : Collections.emptyList();
         String sex = request.getSexo();
         
 
         //Carrera + semestre + sexo (Especifica al menos uno)
-        if(request.getMajors() != null && request.getSemesters() != null && request.getSexo() != null){
+        if(majors.isEmpty() && semesters.isEmpty() && sex.isEmpty()){
             query.append("SELECT ").append(GeneralQuerysConstants.FILTERS_COUNT_HOUSE_HOULD_SERVICES);
             query.append(" FROM ").append(String.join(", ", tables));
             query.append(GeneralQuerysConstants.CLAUSULE_WHERE_H_H_S_C);
@@ -115,66 +112,73 @@ public class HouseHoldServicesService {
             query.append(" ("+concatenatedMajors+") ").append(" AND ").append(GeneralQuerysConstants.CLAUSULE_H_H_S_S);
             String concatenatedSemesters = "'" + String.join("', '", semesters) + "'";
             query.append(" ("+concatenatedSemesters+") ").append(" AND ");
-            query. append(GeneralQuerysConstants.CLAUSULE_H_H_S_SEX).append(" ('"+sex+"') ").append(";");
+            query. append(GeneralQuerysConstants.CLAUSULE_H_H_S_SEX).append(" ('"+sex+"') ").append(" AND ");
+            query.append(GeneralQuerysConstants.JOIN_H_H_S_TABLES).append(";");
             System.out.println("Carrera, semestre, sexo (Especifica al menos uno): "+"\n"+query+"\n\n");
             return query.toString();
         }else
         //carrera + semestre
-        if(request.getMajors() != null && request.getSemesters() != null && request.getSexo() == null){
+        if(!majors.isEmpty() && !semesters.isEmpty() && sex.isEmpty()){
             query.append("SELECT ").append(GeneralQuerysConstants.FILTERS_COUNT_HOUSE_HOULD_SERVICES);
             query.append(" FROM ").append(String.join(", ", tables));
             query.append(GeneralQuerysConstants.CLAUSULE_WHERE_H_H_S_C);
             String concatenatedMajors = "'" + String.join("', '", majors) + "'";
             query.append(" ("+concatenatedMajors+") ").append(" AND ").append(GeneralQuerysConstants.CLAUSULE_H_H_S_S);
             String concatenatedSemesters = "'" + String.join("', '", semesters) + "'";
-            query.append(" ("+concatenatedSemesters+") ").append(";");
+            query.append(" ("+concatenatedSemesters+") ").append(" AND ");
+            query.append(GeneralQuerysConstants.JOIN_H_H_S_TABLES).append(";");
             System.out.println("carrera + semestre: "+"\n"+query+"\n\n");
             return query.toString();
-        }else 
+        }else
         //carreras + sexo
-        if(request.getMajors() != null && request.getSemesters() == null && request.getSexo() != null){
+        if(!majors.isEmpty() && semesters.isEmpty() && !sex.isEmpty()){
             query.append("SELECT ").append(GeneralQuerysConstants.FILTERS_COUNT_HOUSE_HOULD_SERVICES);
             query.append(" FROM ").append(String.join(", ", tables));
             query.append(GeneralQuerysConstants.CLAUSULE_WHERE_H_H_S_C);
             String concatenatedMajors = "'" + String.join("', '", majors) + "'";
             query.append(" ("+concatenatedMajors+") ").append(" AND ");
-            query. append(GeneralQuerysConstants.CLAUSULE_H_H_S_SEX).append(" ('"+sex+"') ").append(";");
+            query. append(GeneralQuerysConstants.CLAUSULE_H_H_S_SEX).append(" ('"+sex+"') ").append(" AND ");
+            query.append(GeneralQuerysConstants.JOIN_H_H_S_TABLES).append(";");
             System.out.println("carreras + sexo: "+"\n"+query+"\n\n");
             return query.toString();
         }else
         //carrera
-        if(request.getMajors() != null && request.getSemesters() == null && request.getSexo() == null){
+        if(!majors.isEmpty() && semesters.isEmpty() && sex.isEmpty()){
             query.append("SELECT ").append(GeneralQuerysConstants.FILTERS_COUNT_HOUSE_HOULD_SERVICES);
             query.append(" FROM ").append(String.join(", ", tables));
             query.append(GeneralQuerysConstants.CLAUSULE_WHERE_H_H_S_C);
             String concatenatedFilters = "'" + String.join("', '", majors) + "'";
-            query.append(" ("+concatenatedFilters+") ").append(";");
+            query.append(" ("+concatenatedFilters+") ").append(" AND ");
+            query.append(GeneralQuerysConstants.JOIN_H_H_S_TABLES).append(";");
             System.out.println("carreras: "+"\n"+query+"\n\n");
             return query.toString();
         }else
         //semestres + sexo
-        if(request.getMajors() == null && request.getSemesters() != null && request.getSexo() != null){
+        if(majors.isEmpty() && !semesters.isEmpty() && !sex.isEmpty()){
             query.append("SELECT ").append(GeneralQuerysConstants.FILTERS_COUNT_HOUSE_HOULD_SERVICES);
             query.append(" FROM ").append(String.join(", ", tables)).append(" WHERE ").append(GeneralQuerysConstants.CLAUSULE_H_H_S_S);
             String concatenatedSemesters = "'" + String.join("', '", semesters) + "'";
             query.append(" ("+concatenatedSemesters+") ").append(" AND ");
-            query. append(GeneralQuerysConstants.CLAUSULE_H_H_S_SEX).append(" ('"+sex+"') ").append(";");
+            query. append(GeneralQuerysConstants.CLAUSULE_H_H_S_SEX).append(" ('"+sex+"') ").append(" AND ");
+            query.append(GeneralQuerysConstants.JOIN_H_H_S_TABLES).append(";");
             System.out.println("semestres + sexo: "+"\n"+query+"\n\n");
             return query.toString();
         }else
         //sexo
-        if(request.getMajors() == null && request.getSemesters() == null && request.getSexo() != null){
+        if(majors.isEmpty() && semesters.isEmpty() && !sex.isEmpty()){
             query.append("SELECT ").append(GeneralQuerysConstants.FILTERS_COUNT_HOUSE_HOULD_SERVICES);
             query.append(" FROM ").append(String.join(", ", tables)).append(" WHERE ");
-            query. append(GeneralQuerysConstants.CLAUSULE_H_H_S_SEX).append(" ('"+sex+"') ").append(";");
+            query. append(GeneralQuerysConstants.CLAUSULE_H_H_S_SEX).append(" ('"+sex+"') ").append(" AND ");
+            query.append(GeneralQuerysConstants.JOIN_H_H_S_TABLES).append(";");
             System.out.println("sexo: "+"\n"+query+"\n\n");
             return query.toString();
         }else
-        if(request.getMajors() == null && request.getSemesters() != null && request.getSexo() == null){
+        if(majors.isEmpty() && !semesters.isEmpty() && sex.isEmpty()){
             query.append("SELECT ").append(GeneralQuerysConstants.FILTERS_COUNT_HOUSE_HOULD_SERVICES);
             query.append(" FROM ").append(String.join(", ", tables)).append(" WHERE ");
             String concatenatedSemesters = "'" + String.join("', '", semesters) + "'";
-            query. append(GeneralQuerysConstants.CLAUSULE_H_H_S_S).append(" ("+concatenatedSemesters+") ").append(";");
+            query. append(GeneralQuerysConstants.CLAUSULE_H_H_S_S).append(" ("+concatenatedSemesters+") ").append(" AND ");
+            query.append(GeneralQuerysConstants.JOIN_H_H_S_TABLES).append(";");
             System.out.println("semestres: "+"\n"+query+"\n\n");
             return query.toString();
         }
