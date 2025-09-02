@@ -49,4 +49,19 @@ public class GeneralQuerysConstants {
     public static final String CLAUSULE_H_H_S_S = " semestre IN ";
     //Filtro por sexo
     public static final String CLAUSULE_H_H_S_SEX = " sexo IN ";
+
+    //Filtros ingresos
+    public static final String COUNT_ECONOMIC_LEVEL = "SELECT " +
+            "COUNT(*) FILTER ( WHERE i >= 0 AND i <= 2699 ) AS Pobreza_Extrema, " +
+            "COUNT(*) FILTER ( WHERE i >= 2700 AND i <= 6799 ) AS Clase_Pobre, " +
+            "COUNT(*) FILTER ( WHERE i >= 6800 AND i <= 11599 ) AS Clase_Media_Baja, " +
+            "COUNT(*) FILTER ( WHERE i >= 11600 AND i <= 34999 ) AS Clase_Media, " +
+            "COUNT(*) FILTER ( WHERE i >= 35000 AND i <= 84999 ) AS Clase_Media_Alta, " +
+            "COUNT(*) FILTER ( WHERE i >= 85500 ) AS Clase_Alta " +
+            "FROM ingresos_agrupados ig " +
+            "INNER JOIN alumnos_elegidos ae ON ig.curp = ae.curp";
+    public static final String CHOSE_STUDENTS = "WITH alumnos_elegidos AS ( SELECT curp FROM alumnos ";
+    public static final String SUM_EARNINGS = "ingresos_agrupados AS (SELECT curp, SUM(ingreso) AS i FROM ingresos GROUP BY curp ) ";
+    public static final String SEMESTER = " semestre IN ";
+    public static final String BACHELORS_DEGREE = " carrera IN ";
 }
