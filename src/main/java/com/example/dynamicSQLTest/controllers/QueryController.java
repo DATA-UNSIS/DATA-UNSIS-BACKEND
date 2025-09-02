@@ -2,6 +2,7 @@ package com.example.dynamicSQLTest.controllers;
 
 import com.example.dynamicSQLTest.DTOs.request.GeneralQueryRequest;
 import com.example.dynamicSQLTest.DTOs.request.QueryRequest;
+import com.example.dynamicSQLTest.DTOs.response.FinalQueryResponse;
 import com.example.dynamicSQLTest.DTOs.response.QueryResponse;
 import com.example.dynamicSQLTest.services.DynamicQueryService;
 import com.example.dynamicSQLTest.services.GeneralQueryService;
@@ -37,7 +38,7 @@ public class QueryController {
         }
     }
     @PostMapping("/execute-general-query")
-    public ResponseEntity<QueryResponse> executeQuerys(@RequestBody GeneralQueryRequest request){
+    public ResponseEntity<FinalQueryResponse> executeQuerys(@RequestBody GeneralQueryRequest request){
         return ResponseEntity.ok(generalQueryService.executeGeneralQuery(request));
     }
 }
