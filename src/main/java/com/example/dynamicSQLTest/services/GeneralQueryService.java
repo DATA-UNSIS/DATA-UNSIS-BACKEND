@@ -1,5 +1,6 @@
 package com.example.dynamicSQLTest.services;
 
+import com.example.dynamicSQLTest.services.generalServices.EconomicLevelService;
 import com.example.dynamicSQLTest.services.generalServices.CivilStateService;
 import com.example.dynamicSQLTest.services.generalServices.MajorDistributionService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +23,8 @@ public class GeneralQueryService {
     private CivilStateService civilStateService;
     @Autowired
     MajorDistributionService majorDistributionService;
+    @Autowired
+    EconomicLevelService economicLevelService;
 
     @Autowired
     private HouseHoldServicesService houseHoldServicesService;
@@ -34,7 +37,8 @@ public class GeneralQueryService {
             case ETitles.MAJOR_DISTRIBUTION :
                 results = majorDistributionService.executeMajorDistributionQuery(request);
                 break;
-            case ETitles.ECONOMIC_LEVEL : 
+            case ETitles.ECONOMIC_LEVEL :
+                results = economicLevelService.executeEconomicLevelQuery(request);
                 break;
             case ETitles.SCHOLARSHIPS_REQUESTED :
                 results = scholarShipsRequestedService.executeNativeQuery(ETitles.SCHOLARSHIPS_REQUESTED);
