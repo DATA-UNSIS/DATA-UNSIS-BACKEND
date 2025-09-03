@@ -107,6 +107,10 @@ public class GeneralQuerysConstants {
 
         //Filtra por semestre
     public static final String COUNT_SEMESTER_DISTRIBUTION = "SELECT semestre, COUNT(*) AS total FROM alumnos GROUP BY semestre;";
+    public static final String FILTERS_COUNT_SEMESTER_DISTRIBUTION = " semestre, COUNT(*) AS total ";
+
+    public static final String COUNT_SEX_DISTRIBUTION = "SELECT sexo, COUNT(*) AS total FROM alumnos GROUP BY sexo;";
+    public static final String FILTERS_COUNT_SEX_DISTRIBUTION= " sexo, COUNT(*) AS total ";
 
     public static final String COUNT_STATE = "SELECT entidad, count(entidad) ";
     public static final String GROUP_STATE = " GROUP BY entidad";
