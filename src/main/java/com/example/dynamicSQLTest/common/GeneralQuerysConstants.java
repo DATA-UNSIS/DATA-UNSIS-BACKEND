@@ -83,4 +83,7 @@ public class GeneralQuerysConstants {
     public static final String JOIN_ON_CURP = " ON %s.curp = %s.curp ";
 
 
+    public static final String COUNT_STATE = "SELECT entidad, count(entidad) ";
+    public static final String GROUP_STATE = " GROUP BY entidad";
+    public static final String CURP_CONDITION = "lugar_procedencia.curp = alumnos.curp";
 }
