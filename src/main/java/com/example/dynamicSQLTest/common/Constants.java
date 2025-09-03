@@ -10,4 +10,11 @@ public class Constants {
             "total_solteros", "total_casados", "total_divorciados",
             "total_union_libre", "total_padre_o_madre_soltero", "total_otro"
     };
+
+    public static final String[] institutionOrigin = {
+            "IEBO", "COBAO", "CBTIS", "CBTA", "CETIS",
+            "CECYTE PLANTEL", "CECYTE EMSAD", "CONALEP", "BIC", "PREPARATORIA UABJO",
+            "TELEBACHILLERATO", "CBTF", "CETMAR", "CDART Miguel Cabrera", "PREFECO",
+            "PREPARATORIA ABIERTA", "BACHILLERATO PARTICULAR", "CEB", "otro"
+    };
 }
