@@ -12,7 +12,7 @@ import static com.example.dynamicSQLTest.common.Constants.civilStates;
 @Component
 public class CivilStateResultProcessor {
 
-    public Map<String, Object> processResults(List<Object[]> resultList, GeneralQueryRequest request) {
+    public Map<String, Object> processResults(List<Object[]> resultList) {
         Map<String, Object> data = new LinkedHashMap<>();
 
         if (resultList.isEmpty()) {

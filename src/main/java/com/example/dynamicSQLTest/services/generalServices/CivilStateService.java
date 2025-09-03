@@ -41,7 +41,7 @@ public class CivilStateService {
             @SuppressWarnings("unchecked")
             List<Object[]> resultList = query.getResultList();
 
-            response.setData(resultProcessor.processResults(resultList, request));
+            response.setData(resultProcessor.processResults(resultList));
 
         } catch (Exception e) {
             throw new RuntimeException("Civil state query execution failed: " + e.getMessage(), e);
