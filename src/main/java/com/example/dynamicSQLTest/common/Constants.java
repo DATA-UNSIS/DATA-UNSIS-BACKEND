@@ -7,8 +7,8 @@ public class Constants {
   };
   
     public static final String[] civilStates = {
-            "total_solteros", "total_casados", "total_divorciados",
-            "total_union_libre", "total_padre_o_madre_soltero", "total_otro"
+            "Solteros", "Casados", "Divorciados",
+            "Unión Libre", "Padre/Madre soltero(a)", "otro"
     };
 
     public static final String[] institutionOrigin = {
