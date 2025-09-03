@@ -1,17 +1,15 @@
 package com.example.dynamicSQLTest.processors;
 
-import com.example.dynamicSQLTest.DTOs.request.GeneralQueryRequest;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
-import java.util.*;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
-import static com.example.dynamicSQLTest.common.Constants.civilStates;
+import static com.example.dynamicSQLTest.common.Constants.institutionOrigin;
 
-@Slf4j
 @Component
-public class CivilStateResultProcessor {
-
+public class InstitutionOriginResultProcessor {
     public Map<String, Object> processResults(List<Object[]> resultList) {
         Map<String, Object> data = new LinkedHashMap<>();
 
@@ -25,8 +23,8 @@ public class CivilStateResultProcessor {
             return createEmptyResult();
         }
 
-        for (int i = 0; i < civilStates.length && i < row.length; i++) {
-            data.put(civilStates[i], row[i] != null ? row[i] : 0);
+        for (int i = 0; i < institutionOrigin.length && i < row.length; i++) {
+            data.put(institutionOrigin[i], row[i] != null ? row[i] : 0);
         }
 
         return data;
@@ -34,13 +32,13 @@ public class CivilStateResultProcessor {
 
     private Map<String, Object> createEmptyResult() {
         Map<String, Object> emptyData = new LinkedHashMap<>();
-        Map<String, Object> emptyCivilState = new LinkedHashMap<>();
+        Map<String, Object> emptyInstitutionProcedency = new LinkedHashMap<>();
 
-        for (String state : civilStates) {
-            emptyCivilState.put(state, 0);
+        for (String state : institutionOrigin) {
+            emptyInstitutionProcedency.put(state, 0);
         }
 
-        emptyData.put("No data found", emptyCivilState);
+        emptyData.put("No data found", emptyInstitutionProcedency);
         return emptyData;
     }
 }

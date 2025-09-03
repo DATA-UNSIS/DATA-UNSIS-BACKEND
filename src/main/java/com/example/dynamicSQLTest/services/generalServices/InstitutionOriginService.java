@@ -3,30 +3,28 @@ package com.example.dynamicSQLTest.services.generalServices;
 import com.example.dynamicSQLTest.DTOs.request.GeneralQueryRequest;
 import com.example.dynamicSQLTest.DTOs.response.QueryResponse;
 import com.example.dynamicSQLTest.builders.CivilStateQueryBuilder;
+import com.example.dynamicSQLTest.builders.InstitutionOriginQueryBuilder;
 import com.example.dynamicSQLTest.enums.ETitles;
 import com.example.dynamicSQLTest.processors.CivilStateResultProcessor;
+import com.example.dynamicSQLTest.processors.InstitutionOriginResultProcessor;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.Query;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-
 @Service
-@Slf4j
-public class CivilStateService {
-
+public class InstitutionOriginService {
     @PersistenceContext
     private EntityManager entityManager;
 
     @Autowired
-    private CivilStateQueryBuilder queryBuilder;
+    private InstitutionOriginQueryBuilder queryBuilder;
 
     @Autowired
-    private CivilStateResultProcessor resultProcessor;
+    private InstitutionOriginResultProcessor resultProcessor;
 
     public QueryResponse executeNativeQuery(ETitles title, GeneralQueryRequest request) {
         QueryResponse response = new QueryResponse();
