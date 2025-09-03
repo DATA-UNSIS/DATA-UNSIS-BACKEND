@@ -82,6 +82,9 @@ public class GeneralQuerysConstants {
 
     public static final String JOIN_ON_CURP = " ON %s.curp = %s.curp ";
 
+    public static final String COUNT_MUNICIPALITY_DISTRIBUTION = "SELECT municipio, COUNT(*) AS total from alumnos join lugar_procedencia on alumnos.curp=lugar_procedencia.curp GROUP BY municipio; ";
+    public static final String FILTERS_COUNT_MUNICIPALITY_DISTRIBUTION = " municipio, COUNT(*) AS total ";
+
     public static final String COUNT_INSTITUTION_ORIGIN = "count(*) FILTER (WHERE sub_educativo = 'IEBO') AS total_IEBO, " +
             "count(*) FILTER (WHERE sub_educativo = 'COBAO') AS total_COBAO, " +
             "count(*) FILTER (WHERE sub_educativo = 'CBTIS') AS total_CBTIS, " +
