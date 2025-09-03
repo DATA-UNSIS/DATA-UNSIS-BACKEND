@@ -75,18 +75,29 @@ public class GeneralQueryService {
                         allResults.add(results);
                         break;
                     case ETitles.MUNICIPALITY_DISTRIBUTION:
-                        results = titlesLogicProcessor.executeQueryDistributionNullEnum(title, GeneralQuerysConstants.COUNT_MUNICIPALITY_DISTRIBUTION);
+                        tables = new ArrayList<>(Arrays.asList("lugar_procedencia","alumnos"));
+                        results = titlesLogicProcessor.executeQueryDistributionNullEnum(title, GeneralQuerysConstants.COUNT_MUNICIPALITY_DISTRIBUTION,
+                                                                        request, tables, GeneralQuerysConstants.FILTERS_COUNT_MUNICIPALITY_DISTRIBUTION);
+                        tables.clear();
                         allResults.add(results);
                         break;
                     case ETitles.SEMESTER_DISTRIBUTION:
-                        results = titlesLogicProcessor.executeQueryDistributionNullEnum(title, GeneralQuerysConstants.COUNT_SEMESTER_DISTRIBUTION);
+                        tables = new ArrayList<>(Arrays.asList("alumnos"));
+                        results = titlesLogicProcessor.executeQueryDistributionNullEnum(title, GeneralQuerysConstants.COUNT_SEMESTER_DISTRIBUTION,
+                                                                        request, tables, GeneralQuerysConstants.FILTERS_COUNT_SEMESTER_DISTRIBUTION);
+                        tables.clear();
+                        allResults.add(results);
+                        break;
+                    case ETitles.SEX_DISTRIBUTION:
+                        tables = new ArrayList<>(Arrays.asList("alumnos")); 
+                        results = titlesLogicProcessor.executeQueryDistributionNullEnum(title, GeneralQuerysConstants.COUNT_SEX_DISTRIBUTION,
+                                                                        request, tables, GeneralQuerysConstants.FILTERS_COUNT_SEX_DISTRIBUTION);
+                        tables.clear();
                         allResults.add(results);
                         break;
                     case ETitles.TYPE_INSTITUTION_PROCEDENCY:
                         results = institutionOriginService.executeNativeQuery(ETitles.TYPE_INSTITUTION_PROCEDENCY, request);
                         allResults.add(results);
-                        break;
-                    case ETitles.SEX_DISTRIBUTION: 
                         break;
                     case ETitles.AGE_DISTRIBUTION:
                         break;

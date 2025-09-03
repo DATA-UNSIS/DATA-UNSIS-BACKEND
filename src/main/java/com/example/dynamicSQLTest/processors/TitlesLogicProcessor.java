@@ -89,32 +89,63 @@ public class TitlesLogicProcessor {
     }
     //Procesa los resultados de la consulta y los mapea al formato esperado
     private Map<String, Object> queryProcess(List<Object[]> resultList, Map<String, Object> dataList, Class<? extends Enum<?>> enumType){
-        for(Object[] row : resultList) {
-            for(int i=0; i<row.length; i++){
-                dataList.put(enumType.getEnumConstants()[i].toString(), row[i]);
+        if(enumType!=null){
+            for(Object[] row : resultList) {
+                for(int i=0; i<row.length; i++){
+                    dataList.put(enumType.getEnumConstants()[i].toString(), row[i]);
+                }
             }
-        }
-        return dataList;
-    }
-    //Procesa la distribución por elemento, retorna todos los elementos existentes en BD y su total
-    public QueryResponse executeQueryDistributionNullEnum(ETitles title, String defaultQuery) {
-        try {
-            QueryResponse results = new QueryResponse();
-            Map<String, Object> dataList = new HashMap<>();
+        }else{
 
-            Query nativeQuery = entityManager.createNativeQuery(defaultQuery);
-            @SuppressWarnings("unchecked")
-            List<Object[]> result = nativeQuery.getResultList();
-            results.setTitle(title);
-            System.out.println(defaultQuery);
-            for (Object[] row : result) {
+            for (Object[] row : resultList) {
                 // Usar el primer elemento como clave (nombre) y el segundo como valor (total)
                 String elemento = (String) row[0];
                 Object total = row[1];
                 dataList.put(elemento, total);
             }
-            results.setData(dataList);
-            return results;
+        }
+        return dataList;
+    }
+    //Procesa la distribución por elemento, retorna todos los elementos existentes en BD y su total
+    public QueryResponse executeQueryDistributionNullEnum(ETitles title, String defaultQuery, GeneralQueryRequest request, List<String> tables, String filter) {
+        try {
+            QueryResponse results = new QueryResponse();
+            Map<String, Object> dataList = new HashMap<>();
+            if(request.getMajors()==null && request.getSemesters()==null && request.getSexo()==null){
+                Query nativeQuery = entityManager.createNativeQuery(defaultQuery);
+                @SuppressWarnings("unchecked")
+                List<Object[]> result = nativeQuery.getResultList();
+                results.setTitle(title);
+                System.out.println(defaultQuery);
+                for (Object[] row : result) {
+                    // Usar el primer elemento como clave (nombre) y el segundo como valor (total)
+                    String elemento = (String) row[0];
+                    Object total = row[1];
+                    dataList.put(elemento, total);
+                }
+                results.setData(dataList);
+                return results;
+            }else{
+                String compoundQuery = getCompoundQuery(request, tables, filter);
+                switch (title) {
+                    case ETitles.SEX_DISTRIBUTION:
+                        compoundQuery+=" GROUP BY sexo";
+                        break;
+                    case ETitles.SEMESTER_DISTRIBUTION:
+                        compoundQuery+=" GROUP BY semestre";
+                        break;
+                    case ETitles.MUNICIPALITY_DISTRIBUTION:
+                        compoundQuery+=" GROUP BY municipio";
+                        break;
+                    default:
+                }
+                Query nativeQuery = entityManager.createNativeQuery(compoundQuery);
+                @SuppressWarnings("unchecked")
+                List<Object[]> resultList = nativeQuery.getResultList();
+                    results.setTitle(title);
+                    results.setData(getResultsData(request, dataList, resultList, results, null).getData());
+                return results;
+            }
         }catch (Exception e){
             System.err.println("Query execution error: " + e.getMessage());
             e.printStackTrace();
@@ -132,87 +163,124 @@ public class TitlesLogicProcessor {
         //Carrera + semestre + sexo (Especifica al menos uno)
         if(request.getMajors() != null && request.getSemesters() != null && request.getSexo() != null){
             query.append("SELECT ").append(filter);
-            query.append(" FROM ").append(String.join(", ", tables));
+            query.append(" FROM ");
+            if(tables.size()>1){
+                query.append(String.join(" JOIN ", tables));
+                String joinClause = String.format(GeneralQuerysConstants.JOIN_ON_CURP, tables.get(0), tables.get(1));
+                query.append(joinClause);
+            }else{
+                query.append(tables.get(0)+" ");
+            }
             query.append(GeneralQuerysConstants.CLAUSULE_WHERE_MAJORS);
             String concatenatedMajors = "'" + String.join("', '", majors) + "'";
             query.append(" ("+concatenatedMajors+") ").append(" AND ").append(GeneralQuerysConstants.CLAUSULE_SEMESTERS);
             String concatenatedSemesters = "'" + String.join("', '", semesters) + "'";
             query.append(" ("+concatenatedSemesters+") ").append(" AND ");
-            query. append(GeneralQuerysConstants.CLAUSULE_SEX).append(" ('"+sex+"') ").append(";");
+            query. append(GeneralQuerysConstants.CLAUSULE_SEX).append(" ('"+sex+"') ");
             System.out.println("Carrera, semestre, sexo (Especifica al menos uno): "+"\n"+query+"\n\n");
             return query.toString();
         }else
             //carrera + semestre
             if(request.getMajors() != null && request.getSemesters() != null && request.getSexo() == null){
                 query.append("SELECT ").append(filter);
-                query.append(" FROM ").append(String.join(" JOIN ", tables));
-                String joinClause = String.format(GeneralQuerysConstants.JOIN_ON_CURP, tables.get(0), tables.get(1));
-                query.append(joinClause);
+                query.append(" FROM ");
+                if(tables.size()>1){
+                    query.append(String.join(" JOIN ", tables));
+                    String joinClause = String.format(GeneralQuerysConstants.JOIN_ON_CURP, tables.get(0), tables.get(1));
+                    query.append(joinClause);
+                }else{
+                    query.append(tables.get(0)+" ");
+                }
                 query.append(GeneralQuerysConstants.CLAUSULE_WHERE_MAJORS);
                 String concatenatedMajors = "'" + String.join("', '", majors) + "'";
                 query.append(" ("+concatenatedMajors+") ").append(" AND ").append(GeneralQuerysConstants.CLAUSULE_SEMESTERS);
                 String concatenatedSemesters = "'" + String.join("', '", semesters) + "'";
-                query.append(" ("+concatenatedSemesters+") ").append(";");
+                query.append(" ("+concatenatedSemesters+") ");
                 System.out.println("carrera + semestre: "+"\n"+query+"\n\n");
                 return query.toString();
             }else
                 //carreras + sexo
                 if(request.getMajors() != null && request.getSemesters() == null && request.getSexo() != null){
                     query.append("SELECT ").append(filter);
-                    query.append(" FROM ").append(String.join(" JOIN ", tables));
-                    String joinClause = String.format(GeneralQuerysConstants.JOIN_ON_CURP, tables.get(0), tables.get(1));
-                    query.append(joinClause);
+                    query.append(" FROM ");
+                    if(tables.size()>1){
+                        query.append(String.join(" JOIN ", tables));
+                        String joinClause = String.format(GeneralQuerysConstants.JOIN_ON_CURP, tables.get(0), tables.get(1));
+                        query.append(joinClause);
+                    }else{
+                        query.append(tables.get(0)+" ");
+                    }
                     query.append(GeneralQuerysConstants.CLAUSULE_WHERE_MAJORS);
                     String concatenatedMajors = "'" + String.join("', '", majors) + "'";
                     query.append(" ("+concatenatedMajors+") ").append(" AND ");
-                    query. append(GeneralQuerysConstants.CLAUSULE_SEX).append(" ('"+sex+"') ").append(";");
+                    query. append(GeneralQuerysConstants.CLAUSULE_SEX).append(" ('"+sex+"') ");
                     System.out.println("carreras + sexo: "+"\n"+query+"\n\n");
                     return query.toString();
                 }else
                     //carrera
                     if(request.getMajors() != null && request.getSemesters() == null && request.getSexo() == null){
                         query.append("SELECT ").append(filter);
-                        query.append(" FROM ").append(String.join(" JOIN ", tables));
-                        String joinClause = String.format(GeneralQuerysConstants.JOIN_ON_CURP, tables.get(0), tables.get(1));
-                        query.append(joinClause);
+                        query.append(" FROM ");
+                        if(tables.size()>1){
+                            query.append(String.join(" JOIN ", tables));
+                            String joinClause = String.format(GeneralQuerysConstants.JOIN_ON_CURP, tables.get(0), tables.get(1));
+                            query.append(joinClause);
+                        }else{
+                            query.append(tables.get(0)+" ");
+                        }
                         query.append(GeneralQuerysConstants.CLAUSULE_WHERE_MAJORS);
                         String concatenatedFilters = "'" + String.join("', '", majors) + "'";
-                        query.append(" ("+concatenatedFilters+") ").append(";");
+                        query.append(" ("+concatenatedFilters+") ");
                         System.out.println("carreras: "+"\n"+query+"\n\n");
                         return query.toString();
                     }else
                         //semestres + sexo
                         if(request.getMajors() == null && request.getSemesters() != null && request.getSexo() != null){
                             query.append("SELECT ").append(filter);
-                            query.append(" FROM ").append(String.join(" JOIN ", tables));
-                            String joinClause = String.format(GeneralQuerysConstants.JOIN_ON_CURP, tables.get(0), tables.get(1));
-                            query.append(joinClause);
+                            query.append(" FROM ");
+                            if(tables.size()>1){
+                                query.append(String.join(" JOIN ", tables));
+                                String joinClause = String.format(GeneralQuerysConstants.JOIN_ON_CURP, tables.get(0), tables.get(1));
+                                query.append(joinClause);
+                            }else{
+                                query.append(tables.get(0)+" ");
+                            }                            
                             query.append(" WHERE ").append(GeneralQuerysConstants.CLAUSULE_SEMESTERS);
                             String concatenatedSemesters = "'" + String.join("', '", semesters) + "'";
                             query.append(" ("+concatenatedSemesters+") ").append(" AND ");
-                            query. append(GeneralQuerysConstants.CLAUSULE_SEX).append(" ('"+sex+"') ").append(";");
+                            query. append(GeneralQuerysConstants.CLAUSULE_SEX).append(" ('"+sex+"') ");
                             System.out.println("semestres + sexo: "+"\n"+query+"\n\n");
                             return query.toString();
                         }else
                             //sexo
                             if(request.getMajors() == null && request.getSemesters() == null && request.getSexo() != null){
                                 query.append("SELECT ").append(filter);
-                                query.append(" FROM ").append(String.join(" JOIN ", tables));
-                                String joinClause = String.format(GeneralQuerysConstants.JOIN_ON_CURP, tables.get(0), tables.get(1));
-                                query.append(joinClause);
+                                query.append(" FROM ");
+                                if(tables.size()>1){
+                                    query.append(String.join(" JOIN ", tables));
+                                    String joinClause = String.format(GeneralQuerysConstants.JOIN_ON_CURP, tables.get(0), tables.get(1));
+                                    query.append(joinClause);
+                                }else{
+                                    query.append(tables.get(0)+" ");
+                                }                                 
                                 query.append(" WHERE ");
-                                query. append(GeneralQuerysConstants.CLAUSULE_SEX).append(" ('"+sex+"') ").append(";");
+                                query. append(GeneralQuerysConstants.CLAUSULE_SEX).append(" ('"+sex+"') ");
                                 System.out.println("sexo: "+"\n"+query+"\n\n");
                                 return query.toString();
                             }else
                             if(request.getMajors() == null && request.getSemesters() != null && request.getSexo() == null){
                                 query.append("SELECT ").append(filter);
-                                query.append(" FROM ").append(String.join(" JOIN ", tables));
-                                String joinClause = String.format(GeneralQuerysConstants.JOIN_ON_CURP, tables.get(0), tables.get(1));
-                                query.append(joinClause);
+                                query.append(" FROM ");
+                                if(tables.size()>1){
+                                    query.append(String.join(" JOIN ", tables));
+                                    String joinClause = String.format(GeneralQuerysConstants.JOIN_ON_CURP, tables.get(0), tables.get(1));
+                                    query.append(joinClause);
+                                }else{
+                                    query.append(tables.get(0)+" ");
+                                }                                 
                                 query.append(" WHERE ");
                                 String concatenatedSemesters = "'" + String.join("', '", semesters) + "'";
-                                query. append(GeneralQuerysConstants.CLAUSULE_SEMESTERS).append(" ("+concatenatedSemesters+") ").append(";");
+                                query. append(GeneralQuerysConstants.CLAUSULE_SEMESTERS).append(" ("+concatenatedSemesters+") ");
                                 System.out.println("semestres: "+"\n"+query+"\n\n");
                                 return query.toString();
                             }
