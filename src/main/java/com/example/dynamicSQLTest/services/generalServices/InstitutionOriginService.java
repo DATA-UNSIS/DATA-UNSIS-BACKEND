@@ -2,10 +2,8 @@ package com.example.dynamicSQLTest.services.generalServices;
 
 import com.example.dynamicSQLTest.DTOs.request.GeneralQueryRequest;
 import com.example.dynamicSQLTest.DTOs.response.QueryResponse;
-import com.example.dynamicSQLTest.builders.CivilStateQueryBuilder;
 import com.example.dynamicSQLTest.builders.InstitutionOriginQueryBuilder;
 import com.example.dynamicSQLTest.enums.ETitles;
-import com.example.dynamicSQLTest.processors.CivilStateResultProcessor;
 import com.example.dynamicSQLTest.processors.InstitutionOriginResultProcessor;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
