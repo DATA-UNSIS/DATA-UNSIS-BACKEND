@@ -71,6 +71,13 @@ public class GeneralQueryService {
                         results = civilStateService.executeNativeQuery(ETitles.CIVIL_STATE, request);
                         allResults.add(results);
                         break;
+                    case ETitles.MUNICIPALITY_DISTRIBUTION:
+                        results = titlesLogicProcessor.executeQueryMunicipalityDistribution(title, GeneralQuerysConstants.COUNT_MUNICIPALITY_DISTRIBUTION);
+                        allResults.add(results);
+                        break;
+                    default:
+                        // Casos no implementados aún
+                        break;
                 }
             }
         FinalQueryResponse finalResults = new FinalQueryResponse();

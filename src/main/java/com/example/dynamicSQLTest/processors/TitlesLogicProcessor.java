@@ -21,7 +21,7 @@ public class TitlesLogicProcessor {
     @PersistenceContext
     private EntityManager entityManager;
 
-    public QueryResponse executeNativeQuery(ETitles title, GeneralQueryRequest request, List<String> tables, String constantService, String filter, Class<? extends Enum<?>> enumType) {
+    public QueryResponse executeNativeQuery(ETitles title, GeneralQueryRequest request, List<String> tables, String defaultQuery, String filter, Class<? extends Enum<?>> enumType) {
         QueryResponse results = new QueryResponse();
         Query nativeQuery = null;
         String compoundQuery;
@@ -30,7 +30,7 @@ public class TitlesLogicProcessor {
         try{
             //todas las carreras, todos los semestres y todos los sexos (No especifica ninguno == null)
             if(request.getMajors() == null && request.getSemesters() == null && request.getSexo() == null){
-                nativeQuery = entityManager.createNativeQuery(constantService.toString());
+                nativeQuery = entityManager.createNativeQuery(defaultQuery.toString());
                 Object[] result = (Object[]) nativeQuery.getSingleResult();
                 results.setTitle(title);
                 for(int i=0; i<result.length; i++){
@@ -55,7 +55,7 @@ public class TitlesLogicProcessor {
         return results;
     }
 
-    private QueryResponse getResultsData(GeneralQueryRequest request, Map<String, Object> dataList, List<Object[]> resultList, QueryResponse results, Class<? extends Enum<?>> enumType){
+    private QueryResponse getResultsData(GeneralQueryRequest request, Map<String, Object> dataList, List<Object[]> resultList, QueryResponse results, Class<? extends Enum<?>> enumType) {
         if(request.getMajors() != null && request.getSemesters() != null && request.getSexo() != null){
             results.setData(queryProcess(resultList, dataList, enumType));
             return results;
@@ -95,6 +95,31 @@ public class TitlesLogicProcessor {
             }
         }
         return dataList;
+    }
+    //Procesa la distribución por municipios, retorna todos los municipios existentes en BD y su total
+    public QueryResponse executeQueryMunicipalityDistribution(ETitles title, String defaultQuery) {
+        try {
+            QueryResponse results = new QueryResponse();
+            Map<String, Object> dataList = new HashMap<>();
+
+            Query nativeQuery = entityManager.createNativeQuery(defaultQuery);
+            @SuppressWarnings("unchecked")
+            List<Object[]> result = nativeQuery.getResultList();
+            results.setTitle(title);
+            System.out.println(defaultQuery);
+            for (Object[] row : result) {
+                // Usar el primer elemento como clave (nombre) y el segundo como valor (total)
+                String municipio = (String) row[0];
+                Object total = row[1];
+                dataList.put(municipio, total);
+            }
+            results.setData(dataList);
+            return results;
+        }catch (Exception e){
+            System.err.println("Query execution error: " + e.getMessage());
+            e.printStackTrace();
+            throw new RuntimeException("Query execution failed: " + e.getMessage(), e);
+        }
     }
 
     private String getCompoundQuery(GeneralQueryRequest request, List<String> tables, String filter){
