@@ -82,6 +82,31 @@ public class GeneralQuerysConstants {
 
     public static final String JOIN_ON_CURP = " ON %s.curp = %s.curp ";
 
+    public static final String COUNT_MUNICIPALITY_DISTRIBUTION = "SELECT municipio, COUNT(*) AS total from alumnos join lugar_procedencia on alumnos.curp=lugar_procedencia.curp GROUP BY municipio; ";
+    public static final String FILTERS_COUNT_MUNICIPALITY_DISTRIBUTION = " municipio, COUNT(*) AS total ";
+
+    public static final String COUNT_INSTITUTION_ORIGIN = "count(*) FILTER (WHERE sub_educativo = 'IEBO') AS total_IEBO, " +
+            "count(*) FILTER (WHERE sub_educativo = 'COBAO') AS total_COBAO, " +
+            "count(*) FILTER (WHERE sub_educativo = 'CBTIS') AS total_CBTIS, " +
+            "count(*) FILTER (WHERE sub_educativo = 'CBTA') AS total_CBTA, " +
+            "count(*) FILTER (WHERE sub_educativo = 'CETIS') AS total_CETIS, " +
+            "count(*) FILTER (WHERE sub_educativo = 'CECYTE PLANTEL') AS total_CECYTE_PLANTEL, " +
+            "count(*) FILTER (WHERE sub_educativo = 'CECYTE EMSAD') AS total_CECYTE_EMSAD, " +
+            "count(*) FILTER (WHERE sub_educativo = 'CONALEP') AS total_CONALEP, " +
+            "count(*) FILTER (WHERE sub_educativo = 'BACHILLERATO INTEGRAL COMUNITARIO (BIC)') AS total_BIC, " +
+            "count(*) FILTER (WHERE sub_educativo = 'PREPARATORIA UABJO') AS total_PREPARATORIO_UABJO, " +
+            "count(*) FILTER (WHERE sub_educativo = 'TELEBACHILLERATO (TBC)') AS total_TBC, " +
+            "count(*) FILTER (WHERE sub_educativo = 'CBTF') AS total_CBTF, " +
+            "count(*) FILTER (WHERE sub_educativo = 'CETMAR') AS total_CETMAR, " +
+            "count(*) FILTER (WHERE sub_educativo = 'CDART Miguel Cabrera') AS total_CDART, " +
+            "count(*) FILTER (WHERE sub_educativo = 'PREFECO') AS total_PREFECO, " +
+            "count(*) FILTER (WHERE sub_educativo = 'PREPARATORIA ABIERTA') AS total_PREPARATORIA_ABIERTA, " +
+            "count(*) FILTER (WHERE sub_educativo = 'BACHILLERATO PARTICULAR') AS total_BACHILLERATO_PARTICULAR, " +
+            "count(*) FILTER (WHERE sub_educativo = 'CEB') AS total_CEB, " +
+            "count(*) FILTER (WHERE sub_educativo NOT IN ('COBAO','CBTIS','CBTA','CETIS','CECYTE PLANTEL','CECYTE EMSAD','CONALEP','BACHILLERATO INTEGRAL COMUNITARIO (BIC)','PREPARATORIA UABJO','TELEBACHILLERATO (TBC)','CBTF','CETMAR','CDART Miguel Cabrera','PREFECO','PREPARATORIA ABIERTA','BACHILLERATO PARTICULAR','CEB')) AS total_otro";
+
+        //Filtra por semestre
+    public static final String COUNT_SEMESTER_DISTRIBUTION = "SELECT semestre, COUNT(*) AS total FROM alumnos GROUP BY semestre;";
 
     public static final String COUNT_STATE = "SELECT entidad, count(entidad) ";
     public static final String GROUP_STATE = " GROUP BY entidad";

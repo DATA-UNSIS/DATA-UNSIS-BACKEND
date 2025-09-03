@@ -7,6 +7,7 @@ import com.example.dynamicSQLTest.enums.EScholarships;
 import com.example.dynamicSQLTest.processors.TitlesLogicProcessor;
 import com.example.dynamicSQLTest.services.generalServices.EconomicLevelService;
 import com.example.dynamicSQLTest.services.generalServices.CivilStateService;
+import com.example.dynamicSQLTest.services.generalServices.InstitutionOriginService;
 import com.example.dynamicSQLTest.services.generalServices.MajorDistributionService;
 import com.example.dynamicSQLTest.services.generalServices.StateDistributionService;
 import lombok.*;
@@ -33,6 +34,8 @@ public class GeneralQueryService {
     MajorDistributionService majorDistributionService;
     @Autowired
     EconomicLevelService economicLevelService;
+    @Autowired
+    InstitutionOriginService institutionOriginService;
     @Autowired
     private TitlesLogicProcessor titlesLogicProcessor;
     @Autowired
@@ -74,10 +77,32 @@ public class GeneralQueryService {
                         results = civilStateService.executeNativeQuery(ETitles.CIVIL_STATE, request);
                         allResults.add(results);
                         break;
+                    case ETitles.MUNICIPALITY_DISTRIBUTION:
+                        results = titlesLogicProcessor.executeQueryDistributionNullEnum(title, GeneralQuerysConstants.COUNT_MUNICIPALITY_DISTRIBUTION);
+                        allResults.add(results);
+                        break;
+                    case ETitles.SEMESTER_DISTRIBUTION:
+                        results = titlesLogicProcessor.executeQueryDistributionNullEnum(title, GeneralQuerysConstants.COUNT_SEMESTER_DISTRIBUTION);
+                        allResults.add(results);
+                        break;
+                    case ETitles.TYPE_INSTITUTION_PROCEDENCY:
+                        results = institutionOriginService.executeNativeQuery(ETitles.TYPE_INSTITUTION_PROCEDENCY, request);
+                        allResults.add(results);
+                        break;
+                    case ETitles.SEX_DISTRIBUTION: 
+                        break;
+                    case ETitles.AGE_DISTRIBUTION:
+                        break;
                     case ETitles.STATE_DISTRIBUTION:
                         tables = new ArrayList<>(Arrays.asList("lugar_procedencia", "alumnos"));
                         results = stateDistribution.executeStateDistributionQuery(request, tables);
                         allResults.add(results);
+                        break;
+                    case ETitles.FAMILY_HOUSE:
+                        break;
+                    case ETitles.TRANSPORTATION_MEDIUM:
+                        break;
+                    case ETitles.HOMEWORK_DEVICES:
                         break;
                 }
             }
