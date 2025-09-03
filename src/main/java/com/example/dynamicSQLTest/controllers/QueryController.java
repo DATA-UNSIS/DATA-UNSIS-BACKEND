@@ -3,7 +3,6 @@ package com.example.dynamicSQLTest.controllers;
 import com.example.dynamicSQLTest.DTOs.request.GeneralQueryRequest;
 import com.example.dynamicSQLTest.DTOs.request.QueryRequest;
 import com.example.dynamicSQLTest.DTOs.response.FinalQueryResponse;
-import com.example.dynamicSQLTest.DTOs.response.QueryResponse;
 import com.example.dynamicSQLTest.services.DynamicQueryService;
 import com.example.dynamicSQLTest.services.GeneralQueryService;
 import org.springframework.beans.factory.annotation.Autowired;

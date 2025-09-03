@@ -86,9 +86,19 @@ public class GeneralQueryService {
                         results = institutionOriginService.executeNativeQuery(ETitles.TYPE_INSTITUTION_PROCEDENCY, request);
                         allResults.add(results);
                         break;
-                    default:
-                        
+                    case ETitles.SEX_DISTRIBUTION: 
                         break;
+                    case ETitles.AGE_DISTRIBUTION:
+                        break;
+                    case ETitles.STATE_DISTRIBUTION:
+                        break;
+                    case ETitles.FAMILY_HOUSE:
+                        break;
+                    case ETitles.TRANSPORTATION_MEDIUM:
+                        break;
+                    case ETitles.HOMEWORK_DEVICES:
+                        break;
+
                 }
             }
         FinalQueryResponse finalResults = new FinalQueryResponse();

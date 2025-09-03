@@ -96,7 +96,7 @@ public class TitlesLogicProcessor {
         }
         return dataList;
     }
-    //Procesa la distribución por municipios, retorna todos los municipios existentes en BD y su total
+    //Procesa la distribución por elemento, retorna todos los elementos existentes en BD y su total
     public QueryResponse executeQueryDistributionNullEnum(ETitles title, String defaultQuery) {
         try {
             QueryResponse results = new QueryResponse();
