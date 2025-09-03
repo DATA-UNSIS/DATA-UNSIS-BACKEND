@@ -7,6 +7,7 @@ import com.example.dynamicSQLTest.enums.EScholarships;
 import com.example.dynamicSQLTest.processors.TitlesLogicProcessor;
 import com.example.dynamicSQLTest.services.generalServices.EconomicLevelService;
 import com.example.dynamicSQLTest.services.generalServices.CivilStateService;
+import com.example.dynamicSQLTest.services.generalServices.InstitutionOriginService;
 import com.example.dynamicSQLTest.services.generalServices.MajorDistributionService;
 import lombok.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +33,8 @@ public class GeneralQueryService {
     MajorDistributionService majorDistributionService;
     @Autowired
     EconomicLevelService economicLevelService;
+    @Autowired
+    InstitutionOriginService institutionOriginService;
     @Autowired
     private TitlesLogicProcessor titlesLogicProcessor;
 
@@ -69,6 +72,10 @@ public class GeneralQueryService {
                         break;
                     case ETitles.CIVIL_STATE:
                         results = civilStateService.executeNativeQuery(ETitles.CIVIL_STATE, request);
+                        allResults.add(results);
+                        break;
+                    case ETitles.TYPE_INSTITUTION_PROCEDENCY:
+                        results = institutionOriginService.executeNativeQuery(ETitles.TYPE_INSTITUTION_PROCEDENCY, request);
                         allResults.add(results);
                         break;
                 }
