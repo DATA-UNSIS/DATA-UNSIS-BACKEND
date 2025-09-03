@@ -87,7 +87,7 @@ public class GeneralQueryService {
                         allResults.add(results);
                         break;
                     default:
-                        // Casos no implementados aún
+                        
                         break;
                 }
             }
