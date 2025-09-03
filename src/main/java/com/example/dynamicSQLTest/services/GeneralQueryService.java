@@ -75,7 +75,11 @@ public class GeneralQueryService {
                         allResults.add(results);
                         break;
                     case ETitles.MUNICIPALITY_DISTRIBUTION:
-                        results = titlesLogicProcessor.executeQueryMunicipalityDistribution(title, GeneralQuerysConstants.COUNT_MUNICIPALITY_DISTRIBUTION);
+                        results = titlesLogicProcessor.executeQueryDistributionNullEnum(title, GeneralQuerysConstants.COUNT_MUNICIPALITY_DISTRIBUTION);
+                        allResults.add(results);
+                        break;
+                    case ETitles.SEMESTER_DISTRIBUTION:
+                        results = titlesLogicProcessor.executeQueryDistributionNullEnum(title, GeneralQuerysConstants.COUNT_SEMESTER_DISTRIBUTION);
                         allResults.add(results);
                         break;
                     case ETitles.TYPE_INSTITUTION_PROCEDENCY:
@@ -83,7 +87,7 @@ public class GeneralQueryService {
                         allResults.add(results);
                         break;
                     default:
-                        // Casos no implementados aún
+                        
                         break;
                 }
             }
