@@ -9,6 +9,7 @@ import com.example.dynamicSQLTest.services.generalServices.EconomicLevelService;
 import com.example.dynamicSQLTest.services.generalServices.CivilStateService;
 import com.example.dynamicSQLTest.services.generalServices.InstitutionOriginService;
 import com.example.dynamicSQLTest.services.generalServices.MajorDistributionService;
+import com.example.dynamicSQLTest.services.generalServices.StateDistributionService;
 import lombok.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -37,6 +38,8 @@ public class GeneralQueryService {
     InstitutionOriginService institutionOriginService;
     @Autowired
     private TitlesLogicProcessor titlesLogicProcessor;
+    @Autowired
+    private StateDistributionService stateDistribution;
 
     private QueryResponse results;
     List<QueryResponse> allResults = new ArrayList<>();
@@ -91,6 +94,9 @@ public class GeneralQueryService {
                     case ETitles.AGE_DISTRIBUTION:
                         break;
                     case ETitles.STATE_DISTRIBUTION:
+                        tables = new ArrayList<>(Arrays.asList("lugar_procedencia", "alumnos"));
+                        results = stateDistribution.executeStateDistributionQuery(request, tables);
+                        allResults.add(results);
                         break;
                     case ETitles.FAMILY_HOUSE:
                         break;
@@ -98,7 +104,6 @@ public class GeneralQueryService {
                         break;
                     case ETitles.HOMEWORK_DEVICES:
                         break;
-
                 }
             }
         FinalQueryResponse finalResults = new FinalQueryResponse();

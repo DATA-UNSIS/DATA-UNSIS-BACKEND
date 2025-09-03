@@ -108,4 +108,7 @@ public class GeneralQuerysConstants {
         //Filtra por semestre
     public static final String COUNT_SEMESTER_DISTRIBUTION = "SELECT semestre, COUNT(*) AS total FROM alumnos GROUP BY semestre;";
 
+    public static final String COUNT_STATE = "SELECT entidad, count(entidad) ";
+    public static final String GROUP_STATE = " GROUP BY entidad";
+    public static final String CURP_CONDITION = "lugar_procedencia.curp = alumnos.curp";
 }
