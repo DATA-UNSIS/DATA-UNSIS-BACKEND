@@ -97,7 +97,7 @@ public class TitlesLogicProcessor {
         return dataList;
     }
     //Procesa la distribución por municipios, retorna todos los municipios existentes en BD y su total
-    public QueryResponse executeQueryMunicipalityDistribution(ETitles title, String defaultQuery) {
+    public QueryResponse executeQueryDistributionNullEnum(ETitles title, String defaultQuery) {
         try {
             QueryResponse results = new QueryResponse();
             Map<String, Object> dataList = new HashMap<>();
@@ -109,9 +109,9 @@ public class TitlesLogicProcessor {
             System.out.println(defaultQuery);
             for (Object[] row : result) {
                 // Usar el primer elemento como clave (nombre) y el segundo como valor (total)
-                String municipio = (String) row[0];
+                String elemento = (String) row[0];
                 Object total = row[1];
-                dataList.put(municipio, total);
+                dataList.put(elemento, total);
             }
             results.setData(dataList);
             return results;

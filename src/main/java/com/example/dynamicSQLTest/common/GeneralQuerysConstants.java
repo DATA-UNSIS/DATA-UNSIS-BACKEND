@@ -104,4 +104,8 @@ public class GeneralQuerysConstants {
             "count(*) FILTER (WHERE sub_educativo = 'BACHILLERATO PARTICULAR') AS total_BACHILLERATO_PARTICULAR, " +
             "count(*) FILTER (WHERE sub_educativo = 'CEB') AS total_CEB, " +
             "count(*) FILTER (WHERE sub_educativo NOT IN ('COBAO','CBTIS','CBTA','CETIS','CECYTE PLANTEL','CECYTE EMSAD','CONALEP','BACHILLERATO INTEGRAL COMUNITARIO (BIC)','PREPARATORIA UABJO','TELEBACHILLERATO (TBC)','CBTF','CETMAR','CDART Miguel Cabrera','PREFECO','PREPARATORIA ABIERTA','BACHILLERATO PARTICULAR','CEB')) AS total_otro";
+
+        //Filtra por semestre
+    public static final String COUNT_SEMESTER_DISTRIBUTION = "SELECT semestre, COUNT(*) AS total FROM alumnos GROUP BY semestre;";
+
 }
