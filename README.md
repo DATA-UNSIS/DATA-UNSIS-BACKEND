@@ -1,6 +1,5 @@
 ## 📋 Documentación y test
 
-- [📖 README](README.md) - Información general del proyecto
 - [🧪 Guía de Testing](TEST-BACKEND.md) - Pruebas del backend
 ## 🧪 Testing
 
