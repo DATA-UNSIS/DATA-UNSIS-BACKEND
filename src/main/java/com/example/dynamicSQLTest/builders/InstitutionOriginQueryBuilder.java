@@ -16,7 +16,7 @@ public class InstitutionOriginQueryBuilder {
 
         query.append(GeneralQuerysConstants.COUNT_INSTITUTION_ORIGIN);
 
-        query.append(" FROM formacion_academica");
+        query.append(" FROM formacion_academica, alumnos");
 
         List<String> conditions = new ArrayList<>();
 
@@ -29,6 +29,7 @@ public class InstitutionOriginQueryBuilder {
         if (request.getSexo() != null && !request.getSexo().isEmpty()) {
             conditions.add("sexo = :sexo");
         }
+        conditions.add("formacion_academica.curp = alumnos.curp");
 
         if (!conditions.isEmpty()) {
             query.append(" WHERE ").append(String.join(" AND ", conditions));
