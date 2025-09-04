@@ -17,4 +17,9 @@ public class Constants {
             "TELEBACHILLERATO", "CBTF", "CETMAR", "CDART Miguel Cabrera", "PREFECO",
             "PREPARATORIA ABIERTA", "BACHILLERATO PARTICULAR", "CEB", "otro"
     };
+
+    public static final String[] transports = {
+            "A pie", "Bicicleta", "Microbus (Urbano), Taxi Colectivo",
+            "Motocicleta", "Automóvil Particular"
+    };
 }

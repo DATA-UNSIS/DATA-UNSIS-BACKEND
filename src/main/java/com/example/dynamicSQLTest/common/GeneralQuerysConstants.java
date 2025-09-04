@@ -115,4 +115,12 @@ public class GeneralQuerysConstants {
     public static final String COUNT_STATE = "SELECT entidad, count(entidad) ";
     public static final String GROUP_STATE = " GROUP BY entidad";
     public static final String CURP_CONDITION = "lugar_procedencia.curp = alumnos.curp";
+
+    public static final String COUNT_TRANSPORT_MEDIUM = "SELECT " +
+            "count(*) FILTER ( WHERE respuesta_omultiple = 68) AS A_pie, " +
+            "count(*) FILTER ( WHERE respuesta_omultiple = 69) AS Bicicleta, " +
+            "count(*) FILTER ( WHERE respuesta_omultiple = 70) AS Microbus, " +
+            "count(*) FILTER ( WHERE respuesta_omultiple = 71) AS Taxi_Colectivo, "+
+            "count(*) FILTER ( WHERE respuesta_omultiple = 72) AS Motocicleta, " +
+            "count(*) FILTER ( WHERE respuesta_omultiple = 73) AS Automovil_Particular ";
 }
