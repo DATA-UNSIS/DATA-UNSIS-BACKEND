@@ -17,4 +17,8 @@ public class Constants {
             "TELEBACHILLERATO", "CBTF", "CETMAR", "CDART Miguel Cabrera", "PREFECO",
             "PREPARATORIA ABIERTA", "BACHILLERATO PARTICULAR", "CEB", "otro"
     };
+
+    public static final String[] familyHouse = {
+            "Rentada", "Prestada", "Propia", "Propia pero vive fuera de Miahuatlán"
+    };
 }

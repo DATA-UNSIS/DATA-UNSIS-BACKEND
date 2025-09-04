@@ -115,4 +115,9 @@ public class GeneralQuerysConstants {
     public static final String COUNT_STATE = "SELECT entidad, count(entidad) ";
     public static final String GROUP_STATE = " GROUP BY entidad";
     public static final String CURP_CONDITION = "lugar_procedencia.curp = alumnos.curp";
+
+    public static final String COUNT_FAMILY_HOUSE = "count(*) FILTER (WHERE opcion_id = 31) AS total_rentada, " +
+            "count(*) FILTER (WHERE opcion_id = 32) AS total_prestada, " +
+            "count(*) FILTER (WHERE opcion_id = 33) AS total_propia, " +
+            "count(*) FILTER (WHERE opcion_id = 38) AS total_propia_pero_vive_fuera";
 }
