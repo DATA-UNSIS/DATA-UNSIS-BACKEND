@@ -5,11 +5,7 @@ import com.example.dynamicSQLTest.common.GeneralQuerysConstants;
 import com.example.dynamicSQLTest.enums.EHouseholdServices;
 import com.example.dynamicSQLTest.enums.EScholarships;
 import com.example.dynamicSQLTest.processors.TitlesLogicProcessor;
-import com.example.dynamicSQLTest.services.generalServices.EconomicLevelService;
-import com.example.dynamicSQLTest.services.generalServices.CivilStateService;
-import com.example.dynamicSQLTest.services.generalServices.InstitutionOriginService;
-import com.example.dynamicSQLTest.services.generalServices.MajorDistributionService;
-import com.example.dynamicSQLTest.services.generalServices.StateDistributionService;
+import com.example.dynamicSQLTest.services.generalServices.*;
 import lombok.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -40,6 +36,8 @@ public class GeneralQueryService {
     private TitlesLogicProcessor titlesLogicProcessor;
     @Autowired
     private StateDistributionService stateDistribution;
+    @Autowired
+    private FamilyHouseService  familyHouseService;
 
     private QueryResponse results;
     List<QueryResponse> allResults = new ArrayList<>();
@@ -110,6 +108,8 @@ public class GeneralQueryService {
                         allResults.add(results);
                         break;
                     case ETitles.FAMILY_HOUSE:
+                        results = familyHouseService.executeNativeQuery(ETitles.FAMILY_HOUSE, request);
+                        allResults.add(results);
                         break;
                     case ETitles.TRANSPORTATION_MEDIUM:
                         break;
