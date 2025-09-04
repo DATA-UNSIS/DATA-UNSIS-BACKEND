@@ -30,10 +30,11 @@ public class TransportMediumService {
     }
 
     private String buildQuery(List<String> majors, List<String> semesters, String sexo, String[] tables) {
-        StringBuilder query = new StringBuilder(GeneralQuerysConstants.COUNT_TRANSPORT_MEDIUM). append(" FROM" );
-        if (majors != null && !majors.isEmpty() && semesters != null && !semesters.isEmpty() && sexo != null && !sexo.isEmpty())
+        StringBuilder query = new StringBuilder(GeneralQuerysConstants.COUNT_TRANSPORT_MEDIUM). append(" FROM " );
+        if (majors != null && !majors.isEmpty() && semesters != null && !semesters.isEmpty() && sexo != null && !sexo.isEmpty()){
             query.append(tables[0]);
-        else {
+            return query.toString();
+        } else {
             query.append(String.join(" JOIN ", tables));
             String joinClause = String.format(GeneralQuerysConstants.JOIN_ON_CURP, tables[0], tables[1]);
             query.append(joinClause).append(" WHERE ");
@@ -48,12 +49,13 @@ public class TransportMediumService {
                         .append(" ('")
                         .append(String.join("', '", semesters))
                         .append("')");
-            if ((majors != null && !majors.isEmpty()) || (semesters != null && !semesters.isEmpty()) && (sexo != null && !sexo.isEmpty())) query.append(" AND ");
+            if (((majors != null && !majors.isEmpty()) || (semesters != null && !semesters.isEmpty())) && (sexo != null && !sexo.isEmpty())) query.append(" AND ");
             if (sexo != null && !sexo.isEmpty())
                 query.append(GeneralQuerysConstants.CLAUSULE_SEX).append(" ('").append(sexo).append("')");
-
+            String finalQuery = query.toString();
+            finalQuery = finalQuery.replaceAll("''", "'");
+            return finalQuery;
         }
-        return query.toString();
     }
 
     private QueryResponse getQueryResponse(String query) {
@@ -62,11 +64,11 @@ public class TransportMediumService {
             @SuppressWarnings("unchecked")
             List<Object[]> results = finalQuery.getResultList();
             QueryResponse queryResponse =  new QueryResponse();
-            queryResponse.setTitle(ETitles.STATE_DISTRIBUTION);
+            queryResponse.setTitle(ETitles.TRANSPORTATION_MEDIUM);
             Map<String, Object> dataResults = new HashMap<>();
 
             if(!results.isEmpty()) dataResults = setDataResults(results);
-            else dataResults.put("Sin resultados", null);
+            else return null;
 
             queryResponse.setData(dataResults);
             return queryResponse;

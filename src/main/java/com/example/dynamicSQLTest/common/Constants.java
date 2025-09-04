@@ -18,8 +18,12 @@ public class Constants {
             "PREPARATORIA ABIERTA", "BACHILLERATO PARTICULAR", "CEB", "otro"
     };
 
+    public static final String[] familyHouse = {
+            "Rentada", "Prestada", "Propia", "Propia pero vive fuera de Miahuatlán"
+    };
+
     public static final String[] transports = {
-            "A pie", "Bicicleta", "Microbus (Urbano), Taxi Colectivo",
+            "A pie", "Bicicleta", "Microbus (Urbano)", "Taxi Colectivo",
             "Motocicleta", "Automóvil Particular"
     };
 }
