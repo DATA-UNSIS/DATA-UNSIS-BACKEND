@@ -71,7 +71,7 @@
 >### Estructuras de commits, con conventional commits y el código de tarea en jira
 >git commit -m "feat: #NUB-13 se cambia el README"
 >feat(nueva feature), fix(bug), refactor(mejorar código), build(dependencias), chore(cambio que no afecte funcionalidad o código muerto(ej: quitar un import que da warnings porque no se usa))
-## 📋 Documentación
+## 📋 Documentación y test
 
 - [📖 README](README.md) - Información general del proyecto
 - [🧪 Guía de Testing](TEST-BACKEND.md) - Pruebas del backend
