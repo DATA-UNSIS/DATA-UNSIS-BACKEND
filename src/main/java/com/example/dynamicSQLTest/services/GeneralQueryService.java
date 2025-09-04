@@ -100,8 +100,6 @@ public class GeneralQueryService {
                         results = institutionOriginService.executeNativeQuery(ETitles.TYPE_INSTITUTION_PROCEDENCY, request);
                         allResults.add(results);
                         break;
-                    case ETitles.AGE_DISTRIBUTION:
-                        break;
                     case ETitles.STATE_DISTRIBUTION:
                         tables = new ArrayList<>(Arrays.asList("lugar_procedencia", "alumnos"));
                         results = stateDistribution.executeStateDistributionQuery(request, tables);
@@ -112,6 +110,14 @@ public class GeneralQueryService {
                         allResults.add(results);
                         break;
                     case ETitles.TRANSPORTATION_MEDIUM:
+                        break;
+                    case ETitles.ECONOMIC_DEPENDENCY:
+                        break;
+                    case ETitles.INDIGENOUS_LANGUAGE:
+                        break;
+                    case ETitles.BLOOD_TYPE:
+                        break;
+                    case ETitles.AGE_DISTRIBUTION:
                         break;
                     case ETitles.HOMEWORK_DEVICES:
                         break;
