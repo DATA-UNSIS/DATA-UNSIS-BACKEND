@@ -21,4 +21,9 @@ public class Constants {
     public static final String[] familyHouse = {
             "Rentada", "Prestada", "Propia", "Propia pero vive fuera de Miahuatlán"
     };
+
+    public static final String[] transportsMedium = {
+            "A pie", "Bicicleta", "Microbus (Urbano)", "Taxi Colectivo",
+            "Motocicleta", "Automóvil Particular"
+    };
 }
