@@ -83,7 +83,7 @@ public class TransportMediumService {
         Map<String, Object> dataResults = new HashMap<>();
         Object[] result = results.getFirst();
         for (int i = 0; i < result.length; i++) {
-            dataResults.put(Constants.transports[i], result[i]);
+            dataResults.put(Constants.transportsMedium[i], result[i]);
         }
         return dataResults;
     }
