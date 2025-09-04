@@ -11,7 +11,8 @@ Para ver la guía completa de pruebas, consulta [TEST-BACKEND.md](TEST-BACKEND.m
 curl -X POST http://localhost:8080/api/query \
   -H "Content-Type: application/json" \
   -d '{"titles": ["MUNICIPALITY_DISTRIBUTION"]}'
-  
+```
+
 >[!NOTE]
 >## NULL en GeneralQueryRequest
 >Para el GeneralQueryRequest validar cuando
