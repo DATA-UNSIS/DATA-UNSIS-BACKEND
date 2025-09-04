@@ -31,7 +31,7 @@ public class TransportMediumService {
 
     private String buildQuery(List<String> majors, List<String> semesters, String sexo, String[] tables) {
         StringBuilder query = new StringBuilder(GeneralQuerysConstants.COUNT_TRANSPORT_MEDIUM). append(" FROM " );
-        if (majors != null && !majors.isEmpty() && semesters != null && !semesters.isEmpty() && sexo != null && !sexo.isEmpty()){
+        if ((majors == null || !majors.isEmpty()) && (semesters == null || !semesters.isEmpty()) && (sexo == null || !sexo.isEmpty())){
             query.append(tables[0]);
             return query.toString();
         } else {
