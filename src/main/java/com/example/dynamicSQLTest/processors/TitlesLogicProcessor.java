@@ -45,7 +45,7 @@ public class TitlesLogicProcessor {
                 @SuppressWarnings("unchecked")
                 List<Object[]> resultList = nativeQuery.getResultList();
                 results.setTitle(title);
-                results.setData(getResultsData(request, dataList, resultList, results, enumType).getData());
+                results.setData(queryProcess(resultList, dataList, enumType));
             }
         }catch(Exception e){
             System.err.println("Query execution error: " + e.getMessage());
@@ -55,38 +55,6 @@ public class TitlesLogicProcessor {
         return results;
     }
 
-    private QueryResponse getResultsData(GeneralQueryRequest request, Map<String, Object> dataList, List<Object[]> resultList, QueryResponse results, Class<? extends Enum<?>> enumType) {
-        if(request.getMajors() != null && request.getSemesters() != null && request.getSexo() != null){
-            results.setData(queryProcess(resultList, dataList, enumType));
-            return results;
-        }else
-        if(request.getMajors() != null && request.getSemesters() != null && request.getSexo() == null){
-            results.setData(queryProcess(resultList, dataList, enumType));
-            return results;
-        }else
-        if(request.getMajors() != null && request.getSemesters() == null && request.getSexo() != null){
-            results.setData(queryProcess(resultList, dataList, enumType));
-            return results;
-        }else
-        if(request.getMajors() != null && request.getSemesters() == null && request.getSexo() == null){
-            results.setData(queryProcess(resultList, dataList, enumType));
-            return results;
-        }else
-        if(request.getMajors() == null && request.getSemesters() != null && request.getSexo() != null){
-            results.setData(queryProcess(resultList, dataList, enumType));
-            return results;
-        }else
-        if(request.getMajors() == null && request.getSemesters() == null && request.getSexo() != null){
-            results.setData(queryProcess(resultList, dataList, enumType));
-            return results;
-        }else
-        if(request.getMajors() == null && request.getSemesters() != null && request.getSexo() == null){
-            results.setData(queryProcess(resultList, dataList, enumType));
-            return results;
-        }
-
-        return results;
-    }
     //Procesa los resultados de la consulta y los mapea al formato esperado
     private Map<String, Object> queryProcess(List<Object[]> resultList, Map<String, Object> dataList, Class<? extends Enum<?>> enumType){
         if(enumType!=null){
@@ -143,7 +111,7 @@ public class TitlesLogicProcessor {
                 @SuppressWarnings("unchecked")
                 List<Object[]> resultList = nativeQuery.getResultList();
                     results.setTitle(title);
-                    results.setData(getResultsData(request, dataList, resultList, results, null).getData());
+                    results.setData(queryProcess(resultList, dataList, null));
                 return results;
             }
         }catch (Exception e){
