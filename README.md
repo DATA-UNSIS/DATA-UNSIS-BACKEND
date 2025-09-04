@@ -1,3 +1,17 @@
+## 📋 Documentación y test
+
+- [📖 README](README.md) - Información general del proyecto
+- [🧪 Guía de Testing](TEST-BACKEND.md) - Pruebas del backend
+## 🧪 Testing
+
+Para ver la guía completa de pruebas, consulta [TEST-BACKEND.md](TEST-BACKEND.md)
+
+### Prueba rápida
+```bash
+curl -X POST http://localhost:8080/api/query \
+  -H "Content-Type: application/json" \
+  -d '{"titles": ["MUNICIPALITY_DISTRIBUTION"]}'
+  
 >[!NOTE]
 >## NULL en GeneralQueryRequest
 >Para el GeneralQueryRequest validar cuando
@@ -71,16 +85,3 @@
 >### Estructuras de commits, con conventional commits y el código de tarea en jira
 >git commit -m "feat: #NUB-13 se cambia el README"
 >feat(nueva feature), fix(bug), refactor(mejorar código), build(dependencias), chore(cambio que no afecte funcionalidad o código muerto(ej: quitar un import que da warnings porque no se usa))
-## 📋 Documentación y test
-
-- [📖 README](README.md) - Información general del proyecto
-- [🧪 Guía de Testing](TEST-BACKEND.md) - Pruebas del backend
-## 🧪 Testing
-
-Para ver la guía completa de pruebas, consulta [TEST-BACKEND.md](TEST-BACKEND.md)
-
-### Prueba rápida
-```bash
-curl -X POST http://localhost:8080/api/query \
-  -H "Content-Type: application/json" \
-  -d '{"titles": ["MUNICIPALITY_DISTRIBUTION"]}'
