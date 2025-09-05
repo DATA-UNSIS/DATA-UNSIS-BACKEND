@@ -128,4 +128,14 @@ public class GeneralQuerysConstants {
             "count(*) FILTER ( WHERE respuesta_omultiple = 71) AS Taxi_Colectivo, "+
             "count(*) FILTER ( WHERE respuesta_omultiple = 72) AS Motocicleta, " +
             "count(*) FILTER ( WHERE respuesta_omultiple = 73) AS Automovil_Particular ";
+
+    public static String COUNT_BLOOD_TYPE = "SELECT " +
+            "count(*) FILTER ( WHERE tipo_sangre = 'A+' ) AS A_pos, " +
+            "count(*) FILTER ( WHERE tipo_sangre = 'A-' ) AS A_neg, " +
+            "count(*) FILTER ( WHERE tipo_sangre = 'B+' ) AS B_pos, " +
+            "count(*) FILTER ( WHERE tipo_sangre = 'B-' ) AS B_neg, "+
+            "count(*) FILTER ( WHERE tipo_sangre = 'AB+' ) AS AB_pos, " +
+            "count(*) FILTER ( WHERE tipo_sangre = 'AB-' ) AS AB_neg, " +
+            "count(*) FILTER ( WHERE tipo_sangre = 'O+' ) AS O_pos, " +
+            "count(*) FILTER ( WHERE tipo_sangre = 'O-' ) AS O_neg";
 }
