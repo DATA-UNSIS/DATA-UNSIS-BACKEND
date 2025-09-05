@@ -19,7 +19,7 @@ public class InstitutionOriginResultProcessor {
 
         Object[] row = resultList.get(0);
 
-        if (row.length != 6) {
+        if (row.length != 19) {
             return createEmptyResult();
         }
 

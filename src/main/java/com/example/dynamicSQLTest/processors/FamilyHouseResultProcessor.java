@@ -19,7 +19,7 @@ public class FamilyHouseResultProcessor {
 
         Object[] row = resultList.get(0);
 
-        if (row.length != 6) {
+        if (row.length != 4) {
             return createEmptyResult();
         }
 
