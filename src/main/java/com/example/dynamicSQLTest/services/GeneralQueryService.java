@@ -39,7 +39,10 @@ public class GeneralQueryService {
     @Autowired
     private FamilyHouseService  familyHouseService;
     @Autowired
+    private EconomicDependencyService economicDependencyService;
+    @Autowired
     private TransportMediumService transportMediumService;
+ 
 
     private QueryResponse results;
     List<QueryResponse> allResults = new ArrayList<>();
@@ -117,6 +120,8 @@ public class GeneralQueryService {
                         allResults.add(results);
                         break;
                     case ETitles.ECONOMIC_DEPENDENCY:
+                        results = economicDependencyService.executeNativeQuery(ETitles.ECONOMIC_DEPENDENCY, request);
+                        allResults.add(results);
                         break;
                     case ETitles.INDIGENOUS_LANGUAGE:
                         break;

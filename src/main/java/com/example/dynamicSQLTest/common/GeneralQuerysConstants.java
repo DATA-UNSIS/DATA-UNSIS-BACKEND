@@ -121,6 +121,14 @@ public class GeneralQuerysConstants {
             "count(*) FILTER (WHERE opcion_id = 33) AS total_propia, " +
             "count(*) FILTER (WHERE opcion_id = 38) AS total_propia_pero_vive_fuera";
 
+    public static final String COUNT_ECONOMIC_DEPENDENCY = "count(*) FILTER (WHERE dependencia_abuelo) AS total_abuelo, " +
+            "count(*) FILTER (WHERE dependencia_esposo) AS total_esposo, " +
+            "count(*) FILTER (WHERE dependencia_hermano) AS total_hermano, " +
+            "count(*) FILTER (WHERE dependencia_independiente) AS total_independiente, " +
+            "count(*) FILTER (WHERE dependencia_madre) AS total_madre, " +
+            "count(*) FILTER (WHERE dependencia_padre) AS total_padre, " +
+            "count(*) FILTER (WHERE dependencia_otro) AS total_otro";
+  
     public static final String COUNT_TRANSPORT_MEDIUM = "SELECT " +
             "count(*) FILTER ( WHERE respuesta_omultiple = 68) AS A_pie, " +
             "count(*) FILTER ( WHERE respuesta_omultiple = 69) AS Bicicleta, " +
