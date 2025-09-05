@@ -2,6 +2,7 @@ package com.example.dynamicSQLTest.services.generalServices;
 
 import com.example.dynamicSQLTest.DTOs.request.GeneralQueryRequest;
 import com.example.dynamicSQLTest.DTOs.response.QueryResponse;
+import com.example.dynamicSQLTest.DTOs.response.messages.ResponseMessages;
 import com.example.dynamicSQLTest.common.Constants;
 import com.example.dynamicSQLTest.common.GeneralQuerysConstants;
 import com.example.dynamicSQLTest.enums.ETitles;
@@ -67,10 +68,12 @@ public class TransportMediumService {
             queryResponse.setTitle(ETitles.TRANSPORTATION_MEDIUM);
             Map<String, Object> dataResults = new HashMap<>();
 
-            if(!results.isEmpty()) dataResults = setDataResults(results);
-            else return null;
+            if(!results.isEmpty()) queryResponse.setData(setDataResults(results));
+            else {
+                dataResults.put("data", ResponseMessages.DATA_NOT_FOUND);
+                queryResponse.setData(dataResults);
+            }
 
-            queryResponse.setData(dataResults);
             return queryResponse;
         } catch (Exception e) {
             System.err.println("Query execution error: " + e.getMessage());

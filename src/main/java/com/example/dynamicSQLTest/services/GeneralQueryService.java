@@ -114,6 +114,7 @@ public class GeneralQueryService {
                     case ETitles.TRANSPORTATION_MEDIUM:
                         tables = new ArrayList<>(Arrays.asList("respuestas", "alumnos"));
                         results = transportMediumService.executeTransportMediumQuery(request, tables);
+                        allResults.add(results);
                         break;
                     case ETitles.ECONOMIC_DEPENDENCY:
                         break;
