@@ -120,4 +120,12 @@ public class GeneralQuerysConstants {
             "count(*) FILTER (WHERE opcion_id = 32) AS total_prestada, " +
             "count(*) FILTER (WHERE opcion_id = 33) AS total_propia, " +
             "count(*) FILTER (WHERE opcion_id = 38) AS total_propia_pero_vive_fuera";
+
+    public static final String COUNT_TRANSPORT_MEDIUM = "SELECT " +
+            "count(*) FILTER ( WHERE respuesta_omultiple = 68) AS A_pie, " +
+            "count(*) FILTER ( WHERE respuesta_omultiple = 69) AS Bicicleta, " +
+            "count(*) FILTER ( WHERE respuesta_omultiple = 70) AS Microbus, " +
+            "count(*) FILTER ( WHERE respuesta_omultiple = 71) AS Taxi_Colectivo, "+
+            "count(*) FILTER ( WHERE respuesta_omultiple = 72) AS Motocicleta, " +
+            "count(*) FILTER ( WHERE respuesta_omultiple = 73) AS Automovil_Particular ";
 }
