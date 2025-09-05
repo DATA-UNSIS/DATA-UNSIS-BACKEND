@@ -40,7 +40,7 @@ public class InstitutionOriginService {
             response.setData(resultProcessor.processResults(resultList));
 
         } catch (Exception e) {
-            throw new RuntimeException("Civil state query execution failed: " + e.getMessage(), e);
+            throw new RuntimeException("Query execution failed: " + e.getMessage(), e);
         }
 
         return response;

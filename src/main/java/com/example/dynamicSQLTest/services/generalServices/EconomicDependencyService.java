@@ -2,8 +2,10 @@ package com.example.dynamicSQLTest.services.generalServices;
 
 import com.example.dynamicSQLTest.DTOs.request.GeneralQueryRequest;
 import com.example.dynamicSQLTest.DTOs.response.QueryResponse;
+import com.example.dynamicSQLTest.builders.EconomicDependencyQueryBuilder;
 import com.example.dynamicSQLTest.builders.FamilyHouseQueryBuilder;
 import com.example.dynamicSQLTest.enums.ETitles;
+import com.example.dynamicSQLTest.processors.EconomicDependencyResultProcessor;
 import com.example.dynamicSQLTest.processors.FamilyHouseResultProcessor;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
@@ -14,15 +16,15 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class FamilyHouseService {
+public class EconomicDependencyService {
     @PersistenceContext
     private EntityManager entityManager;
 
     @Autowired
-    private FamilyHouseQueryBuilder queryBuilder;
+    private EconomicDependencyQueryBuilder queryBuilder;
 
     @Autowired
-    private FamilyHouseResultProcessor resultProcessor;
+    private EconomicDependencyResultProcessor resultProcessor;
 
     public QueryResponse executeNativeQuery(ETitles title, GeneralQueryRequest request) {
         QueryResponse response = new QueryResponse();

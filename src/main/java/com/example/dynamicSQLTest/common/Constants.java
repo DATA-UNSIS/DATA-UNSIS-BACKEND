@@ -22,6 +22,9 @@ public class Constants {
             "Rentada", "Prestada", "Propia", "Propia pero vive fuera de Miahuatlán"
     };
 
+    public static final String[] economicDependency = {
+            "Abuelo", "Esposo", "Hermano", "Independiente", "Madre", "Padre", "Otro"
+    };
     public static final String[] transportsMedium = {
             "A pie", "Bicicleta", "Microbus (Urbano)", "Taxi Colectivo",
             "Motocicleta", "Automóvil Particular"
