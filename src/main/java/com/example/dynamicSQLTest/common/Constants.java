@@ -29,4 +29,8 @@ public class Constants {
             "A pie", "Bicicleta", "Microbus (Urbano)", "Taxi Colectivo",
             "Motocicleta", "Automóvil Particular"
     };
+
+    public static final String[] bloodType = {
+            "A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"
+    };
 }

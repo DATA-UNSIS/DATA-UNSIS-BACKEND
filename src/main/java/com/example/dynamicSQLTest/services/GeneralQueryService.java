@@ -42,7 +42,8 @@ public class GeneralQueryService {
     private EconomicDependencyService economicDependencyService;
     @Autowired
     private TransportMediumService transportMediumService;
- 
+    @Autowired
+    private BloodTypeService bloodTypeService;
 
     private QueryResponse results;
     List<QueryResponse> allResults = new ArrayList<>();
@@ -126,6 +127,8 @@ public class GeneralQueryService {
                     case ETitles.INDIGENOUS_LANGUAGE:
                         break;
                     case ETitles.BLOOD_TYPE:
+                        results = bloodTypeService.executeBloodTypeQuery(request, "alumnos");
+                        allResults.add(results);
                         break;
                     case ETitles.AGE_DISTRIBUTION:
                         break;
