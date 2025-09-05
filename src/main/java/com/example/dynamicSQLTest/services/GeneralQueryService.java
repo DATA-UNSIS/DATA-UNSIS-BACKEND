@@ -40,6 +40,9 @@ public class GeneralQueryService {
     private FamilyHouseService  familyHouseService;
     @Autowired
     private EconomicDependencyService economicDependencyService;
+    @Autowired
+    private TransportMediumService transportMediumService;
+ 
 
     private QueryResponse results;
     List<QueryResponse> allResults = new ArrayList<>();
@@ -112,6 +115,9 @@ public class GeneralQueryService {
                         allResults.add(results);
                         break;
                     case ETitles.TRANSPORTATION_MEDIUM:
+                        tables = new ArrayList<>(Arrays.asList("respuestas", "alumnos"));
+                        results = transportMediumService.executeTransportMediumQuery(request, tables);
+                        allResults.add(results);
                         break;
                     case ETitles.ECONOMIC_DEPENDENCY:
                         results = economicDependencyService.executeNativeQuery(ETitles.ECONOMIC_DEPENDENCY, request);

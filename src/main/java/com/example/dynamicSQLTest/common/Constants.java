@@ -25,4 +25,8 @@ public class Constants {
     public static final String[] economicDependency = {
             "Abuelo", "Esposo", "Hermano", "Independiente", "Madre", "Padre", "Otro"
     };
+    public static final String[] transportsMedium = {
+            "A pie", "Bicicleta", "Microbus (Urbano)", "Taxi Colectivo",
+            "Motocicleta", "Automóvil Particular"
+    };
 }
