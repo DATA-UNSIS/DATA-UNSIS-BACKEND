@@ -6,13 +6,13 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public enum EScholarships {
-    MANUTENTION("BECA DE MANUTENCION"),
+    MANUTENTION("Beca de Manutención"),
     CONAFE("CONAFE"),
-    WRITING_THE_FUTURE("JOVENES ESCRIBIENDO EL FUTURO"),
-    SINGLE_MOTHER("MADRE SOLTERA"),
-    OTHER_SCHOLARSHIP("OTRA BECA"),
-    TALENT_SEEDS("SEMILLAS TALENTO"),
-    OTHER("OTRO");
+    WRITING_THE_FUTURE("Jóvenes Escribiendo el Futuro"),
+    SINGLE_MOTHER("Madre Soltera"),
+    OTHER_SCHOLARSHIP("Otra Beca"),
+    TALENT_SEEDS("Semillas Talento"),
+    OTHER("Otro");
 
     private final String description;
 }

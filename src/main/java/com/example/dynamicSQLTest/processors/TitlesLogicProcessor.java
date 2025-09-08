@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 import com.example.dynamicSQLTest.DTOs.request.GeneralQueryRequest;
 import com.example.dynamicSQLTest.DTOs.response.QueryResponse;
 import com.example.dynamicSQLTest.common.GeneralQuerysConstants;
-import com.example.dynamicSQLTest.enums.EHouseholdServices;
 import com.example.dynamicSQLTest.enums.ETitles;
 
 import jakarta.persistence.EntityManager;
@@ -34,7 +33,20 @@ public class TitlesLogicProcessor {
                 Object[] result = (Object[]) nativeQuery.getSingleResult();
                 results.setTitle(title);
                 for(int i=0; i<result.length; i++){
-                    dataList.put(EHouseholdServices.values()[i].toString(), result[i]);
+
+                    Enum<?> enumConstant = enumType.getEnumConstants()[i];
+                    String key;
+                    
+                    // Intentar obtener la descripción del enum usando reflexión
+                    try {
+                        Object description = enumConstant.getClass().getMethod("getDescription").invoke(enumConstant);
+                        key = description.toString();
+                    } catch (Exception e) {
+                        // Si no tiene getDescription(), usar el nombre del enum
+                        key = enumConstant.toString();
+                    }
+
+                    dataList.put(key, result[i]);
                 }
                 results.setData(dataList);
                 return results;
@@ -60,7 +72,19 @@ public class TitlesLogicProcessor {
         if(enumType!=null){
             for(Object[] row : resultList) {
                 for(int i=0; i<row.length; i++){
-                    dataList.put(enumType.getEnumConstants()[i].toString(), row[i]);
+                    Enum<?> enumConstant = enumType.getEnumConstants()[i];
+                    String key;
+                    
+                    // Intentar obtener la descripción del enum usando reflexión
+                    try {
+                        Object description = enumConstant.getClass().getMethod("getDescription").invoke(enumConstant);
+                        key = description.toString();
+                    } catch (Exception e) {
+                        // Si no tiene getDescription(), usar el nombre del enum
+                        key = enumConstant.toString();
+                    }
+                    
+                    dataList.put(key, row[i]);
                 }
             }
         }else{
