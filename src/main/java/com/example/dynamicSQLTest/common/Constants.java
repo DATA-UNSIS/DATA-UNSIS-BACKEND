@@ -8,14 +8,14 @@ public class Constants {
   
     public static final String[] civilStates = {
             "Solteros", "Casados", "Divorciados",
-            "Unión Libre", "Padre/Madre soltero(a)", "otro"
+            "Unión Libre", "Padre/Madre Soltero(a)", "Otro"
     };
 
     public static final String[] institutionOrigin = {
             "IEBO", "COBAO", "CBTIS", "CBTA", "CETIS",
-            "CECYTE PLANTEL", "CECYTE EMSAD", "CONALEP", "BIC", "PREPARATORIA UABJO",
-            "TELEBACHILLERATO", "CBTF", "CETMAR", "CDART Miguel Cabrera", "PREFECO",
-            "PREPARATORIA ABIERTA", "BACHILLERATO PARTICULAR", "CEB", "otro"
+            "CECYTE PLANTEL", "CECYTE EMSAD", "CONALEP", "BIC", "Preparatoria UABJO",
+            "Telebachillerato", "CBTF", "CETMAR", "CDART Miguel Cabrera", "PREFECO",
+            "Preparatoria Abierta", "Bachillerato Particular", "CEB", "Otro"
     };
 
     public static final String[] familyHouse = {

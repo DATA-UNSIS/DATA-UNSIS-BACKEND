@@ -10,7 +10,7 @@ public enum ECivilStates {
     CASADO("Casado"),
     DIVORCIADO("Divorciado"),
     UNION_LIBRE("Unión Libre"),
-    PADRE_MADRE_SOLTERO("Padre/Madre soltero(a)"),
+    PADRE_MADRE_SOLTERO("Padre/Madre Soltero(a)"),
     OTRO("Otro");
 
     private final String description;
