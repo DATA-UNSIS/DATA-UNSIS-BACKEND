@@ -129,7 +129,11 @@ public class TitlesLogicProcessor {
                     case ETitles.MUNICIPALITY_DISTRIBUTION:
                         compoundQuery+=" GROUP BY municipio";
                         break;
+                    case ETitles.INDIGENOUS_LANGUAGE:
+                        compoundQuery+=" GROUP BY cual_lengua";
+                        break;
                     default:
+                        break;
                 }
                 Query nativeQuery = entityManager.createNativeQuery(compoundQuery);
                 @SuppressWarnings("unchecked")

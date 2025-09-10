@@ -125,6 +125,11 @@ public class GeneralQueryService {
                         allResults.add(results);
                         break;
                     case ETitles.INDIGENOUS_LANGUAGE:
+                        tables = new ArrayList<>(Arrays.asList("alumnos")); 
+                        results = titlesLogicProcessor.executeQueryDistributionNullEnum(title, GeneralQuerysConstants.COUNT_INDIGENOUS_LANGUAGE,
+                                                                        request, tables, GeneralQuerysConstants.FILTER_COUNT_INDIGENOUS_LANGUAGE);
+                        tables.clear();
+                        allResults.add(results);
                         break;
                     case ETitles.BLOOD_TYPE:
                         results = bloodTypeService.executeBloodTypeQuery(request, "alumnos");
