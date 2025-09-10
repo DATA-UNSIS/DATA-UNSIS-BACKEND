@@ -7,6 +7,11 @@ primary_region = "mia"  # Miami, cambia según tu región preferida
 [env]
   JAVA_OPTS = "-XX:+UseContainerSupport -XX:MaxRAMPercentage=75.0"
   SPRING_PROFILES_ACTIVE = "prod"
+  SPRING_APPLICATION_NAME = "DATA-UNSIS-BACKEND"
+  SPRING_DATASOURCE_DRIVER_CLASS_NAME = "org.postgresql.Driver"
+  SPRING_JPA_DATABASE_PLATFORM = "org.hibernate.dialect.PostgreSQLDialect"
+  SPRING_JPA_HIBERNATE_DDL_AUTO = "none"
+  SPRINGDOC_SWAGGER_UI_PATH = "/swagger-ui"
 
 # Configuración de recursos
 [experimental]
