@@ -45,6 +45,8 @@ public class GeneralQueryService {
     @Autowired
     private BloodTypeService bloodTypeService;
     @Autowired
+    private AgeDistributionService ageDistributionService;
+    @Autowired
     private HomeworkDevicesService homeworkDevicesService;
 
     private QueryResponse results;
@@ -138,6 +140,8 @@ public class GeneralQueryService {
                         allResults.add(results);
                         break;
                     case ETitles.AGE_DISTRIBUTION:
+                        results = ageDistributionService.executeAgeDistributionQuery(request);
+                        allResults.add(results);
                         break;
                     case ETitles.HOMEWORK_DEVICES:
                         results = homeworkDevicesService.executeNativeQuery(ETitles.HOMEWORK_DEVICES, request);

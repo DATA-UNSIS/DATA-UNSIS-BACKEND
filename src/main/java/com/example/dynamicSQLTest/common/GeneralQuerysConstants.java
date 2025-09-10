@@ -155,4 +155,5 @@ public class GeneralQuerysConstants {
             "count(*) FILTER (WHERE opcion_id = 8) AS total_escritorio_yo_mesa, " +
             "count(*) FILTER (WHERE opcion_id = 9) AS total_libros_especializados, " +
             "count(*) FILTER (WHERE opcion_id = 10) AS total_espacio_adecuado";
+  public static String SELECT_CURP_QUERY = "SELECT curp FROM alumnos ";
 }
