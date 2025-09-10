@@ -137,7 +137,7 @@ public class GeneralQuerysConstants {
             "count(*) FILTER ( WHERE respuesta_omultiple = 72) AS Motocicleta, " +
             "count(*) FILTER ( WHERE respuesta_omultiple = 73) AS Automovil_Particular ";
 
-    public static String COUNT_BLOOD_TYPE = "SELECT " +
+    public static final String COUNT_BLOOD_TYPE = "SELECT " +
             "count(*) FILTER ( WHERE tipo_sangre = 'A+' ) AS A_pos, " +
             "count(*) FILTER ( WHERE tipo_sangre = 'A-' ) AS A_neg, " +
             "count(*) FILTER ( WHERE tipo_sangre = 'B+' ) AS B_pos, " +
@@ -146,6 +146,9 @@ public class GeneralQuerysConstants {
             "count(*) FILTER ( WHERE tipo_sangre = 'AB-' ) AS AB_neg, " +
             "count(*) FILTER ( WHERE tipo_sangre = 'O+' ) AS O_pos, " +
             "count(*) FILTER ( WHERE tipo_sangre = 'O-' ) AS O_neg";
+
+    public static final String COUNT_INDIGENOUS_LANGUAGE = "SELECT cual_lengua, count(*) AS total FROM alumnos GROUP BY cual_lengua;";
+    public static final String FILTER_COUNT_INDIGENOUS_LANGUAGE = " cual_lengua, count(*) AS total ";
 
     public static String COUNT_HOMEWORK_DEVICES = "count(*) FILTER (WHERE opcion_id = 6) AS total_equipo_computo, " +
             "count(*) FILTER (WHERE opcion_id = 7) AS total_internet, " +
