@@ -44,6 +44,8 @@ public class GeneralQueryService {
     private TransportMediumService transportMediumService;
     @Autowired
     private BloodTypeService bloodTypeService;
+    @Autowired
+    private HomeworkDevicesService homeworkDevicesService;
 
     private QueryResponse results;
     List<QueryResponse> allResults = new ArrayList<>();
@@ -133,6 +135,8 @@ public class GeneralQueryService {
                     case ETitles.AGE_DISTRIBUTION:
                         break;
                     case ETitles.HOMEWORK_DEVICES:
+                        results = homeworkDevicesService.executeNativeQuery(ETitles.HOMEWORK_DEVICES, request);
+                        allResults.add(results);
                         break;
                 }
             }

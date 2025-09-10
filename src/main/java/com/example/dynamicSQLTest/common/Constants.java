@@ -33,4 +33,8 @@ public class Constants {
     public static final String[] bloodType = {
             "A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"
     };
+
+    public static final String[] homeworkDevices = {
+            "Equipo de Cómputo", "Internet", "Escritorio y/o Mesa", "Libros Especializados", "Espacio Adecuado para Estudiar"
+    };
 }
