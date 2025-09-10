@@ -1,4 +1,4 @@
-package com.example.dynamicSQLTest.DTOs;
+package com.example.dynamicSQLTest.DTOs.request;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -14,11 +14,7 @@ public class QueryRequest {
     private List<String> groupBy;
     private List<String> orderBy;
     private Integer limit;
-
-    public QueryRequest() {}
-
-    public QueryRequest(String baseQuery, Map<String, Object> filters) {
-        this.baseQuery = baseQuery;
-        this.filters = filters;
-    }
+    private List<String> selectFields;
+    private List<String> fromTables;
+    private Map<String, Object> havingConditions;
 }

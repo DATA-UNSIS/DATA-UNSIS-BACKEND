@@ -1,0 +1,41 @@
+package com.example.dynamicSQLTest.builders;
+
+import com.example.dynamicSQLTest.DTOs.request.GeneralQueryRequest;
+import com.example.dynamicSQLTest.common.GeneralQuerysConstants;
+import org.springframework.stereotype.Component;
+
+import java.util.ArrayList;
+import java.util.List;
+
+@Component
+public class EconomicDependencyQueryBuilder {
+    public String buildQuery(GeneralQueryRequest request) {
+        StringBuilder query = new StringBuilder();
+
+        query.append("SELECT ");
+
+        query.append(GeneralQuerysConstants.COUNT_ECONOMIC_DEPENDENCY);
+
+        query.append(" FROM alumnos, dependencia_economica");
+
+        List<String> conditions = new ArrayList<>();
+
+        if (request.getMajors() != null && !request.getMajors().isEmpty()) {
+            conditions.add("carrera IN (:majors)");
+        }
+        if (request.getSemesters() != null && !request.getSemesters().isEmpty()) {
+            conditions.add("semestre IN (:semesters)");
+        }
+        if (request.getSexo() != null && !request.getSexo().isEmpty()) {
+            conditions.add("sexo = :sexo");
+        }
+        conditions.add("alumnos.curp = dependencia_economica.curp");
+
+        if (!conditions.isEmpty()) {
+            query.append(" WHERE ").append(String.join(" AND ", conditions));
+        }
+
+        System.out.println(query.toString());
+        return query.toString();
+    }
+}
