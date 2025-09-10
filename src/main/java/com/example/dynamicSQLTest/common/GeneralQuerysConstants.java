@@ -146,4 +146,6 @@ public class GeneralQuerysConstants {
             "count(*) FILTER ( WHERE tipo_sangre = 'AB-' ) AS AB_neg, " +
             "count(*) FILTER ( WHERE tipo_sangre = 'O+' ) AS O_pos, " +
             "count(*) FILTER ( WHERE tipo_sangre = 'O-' ) AS O_neg";
+
+    public static String SELECT_CURP_QUERY = "SELECT curp FROM alumnos ";
 }

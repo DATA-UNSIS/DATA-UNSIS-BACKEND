@@ -16,6 +16,7 @@ import com.example.dynamicSQLTest.DTOs.response.QueryResponse;
 
 import io.micrometer.common.lang.NonNull;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -44,6 +45,8 @@ public class GeneralQueryService {
     private TransportMediumService transportMediumService;
     @Autowired
     private BloodTypeService bloodTypeService;
+    @Autowired
+    private AgeDistributionService ageDistributionService;
 
     private QueryResponse results;
     List<QueryResponse> allResults = new ArrayList<>();
@@ -131,6 +134,8 @@ public class GeneralQueryService {
                         allResults.add(results);
                         break;
                     case ETitles.AGE_DISTRIBUTION:
+                        results = ageDistributionService.executeAgeDistributionQuery(request);
+                        allResults.add(results);
                         break;
                     case ETitles.HOMEWORK_DEVICES:
                         break;
