@@ -1,0 +1,69 @@
+app = "data-unsis-backend"  # Nombre único para tu app en Fly.io
+primary_region = "mia"  # Miami, cambia según tu región preferida
+
+[build]
+  dockerfile = "Dockerfile"
+
+[env]
+  JAVA_OPTS = "-XX:+UseContainerSupport -XX:MaxRAMPercentage=75.0"
+  SPRING_PROFILES_ACTIVE = "prod"
+  SPRING_APPLICATION_NAME = "DATA-UNSIS-BACKEND"
+  SPRING_DATASOURCE_DRIVER_CLASS_NAME = "org.postgresql.Driver"
+  SPRING_JPA_DATABASE_PLATFORM = "org.hibernate.dialect.PostgreSQLDialect"
+  SPRING_JPA_HIBERNATE_DDL_AUTO = "none"
+  SPRINGDOC_SWAGGER_UI_PATH = "/swagger-ui"
+
+# Configuración de recursos
+[experimental]
+  auto_rollback = true
+
+# Health checks
+[checks]
+  [checks.status]
+    port = 8080
+    type = "http"
+    interval = "30s"
+    timeout = "2s"
+    grace_period = "30s"
+    method = "get"
+    path = "/actuator/health"
+    protocol = "http"
+    tls_skip_verify = false
+
+# Configuración de servicios HTTP/HTTPS
+[[services]]
+  internal_port = 8080
+  processes = ["app"]
+  protocol = "tcp"
+  script_checks = []
+  
+  [services.concurrency]
+    hard_limit = 25
+    soft_limit = 20
+    type = "connections"
+
+#Con soft limitamos la concurrencia a 20-25
+
+  # HTTP (puerto 80)
+  [[services.ports]]
+    force_https = true
+    handlers = ["http"]
+    port = 80
+
+  # HTTPS (puerto 443)
+  [[services.ports]]
+    handlers = ["tls", "http"]
+    port = 443
+
+  # Health check interno
+  [services.tcp_checks]
+    grace_period = "1s"
+    interval = "15s"
+    restart_limit = 0
+    timeout = "2s"
+
+# Configuración de memoria y CPU
+[[vm]]
+  memory = "512mb"
+  cpu_kind = "shared"
+  cpus = 1

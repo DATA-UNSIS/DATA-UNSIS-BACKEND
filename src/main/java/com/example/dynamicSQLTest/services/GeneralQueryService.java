@@ -46,6 +46,8 @@ public class GeneralQueryService {
     private BloodTypeService bloodTypeService;
     @Autowired
     private AgeDistributionService ageDistributionService;
+    @Autowired
+    private HomeworkDevicesService homeworkDevicesService;
 
     private QueryResponse results;
     List<QueryResponse> allResults = new ArrayList<>();
@@ -117,7 +119,7 @@ public class GeneralQueryService {
                         results = familyHouseService.executeNativeQuery(ETitles.FAMILY_HOUSE, request);
                         allResults.add(results);
                         break;
-                    case ETitles.TRANSPORTATION_MEDIUM:
+                    case ETitles.TRANSPORT_MEDIUM:
                         tables = new ArrayList<>(Arrays.asList("respuestas", "alumnos"));
                         results = transportMediumService.executeTransportMediumQuery(request, tables);
                         allResults.add(results);
@@ -127,6 +129,11 @@ public class GeneralQueryService {
                         allResults.add(results);
                         break;
                     case ETitles.INDIGENOUS_LANGUAGE:
+                        tables = new ArrayList<>(Arrays.asList("alumnos")); 
+                        results = titlesLogicProcessor.executeQueryDistributionNullEnum(title, GeneralQuerysConstants.COUNT_INDIGENOUS_LANGUAGE,
+                                                                        request, tables, GeneralQuerysConstants.FILTER_COUNT_INDIGENOUS_LANGUAGE);
+                        tables.clear();
+                        allResults.add(results);
                         break;
                     case ETitles.BLOOD_TYPE:
                         results = bloodTypeService.executeBloodTypeQuery(request, "alumnos");
@@ -137,6 +144,8 @@ public class GeneralQueryService {
                         allResults.add(results);
                         break;
                     case ETitles.HOMEWORK_DEVICES:
+                        results = homeworkDevicesService.executeNativeQuery(ETitles.HOMEWORK_DEVICES, request);
+                        allResults.add(results);
                         break;
                 }
             }

@@ -116,10 +116,10 @@ public class GeneralQuerysConstants {
     public static final String GROUP_STATE = " GROUP BY entidad";
     public static final String CURP_CONDITION = "lugar_procedencia.curp = alumnos.curp";
 
-    public static final String COUNT_FAMILY_HOUSE = "count(*) FILTER (WHERE opcion_id = 31) AS total_rentada, " +
-            "count(*) FILTER (WHERE opcion_id = 32) AS total_prestada, " +
-            "count(*) FILTER (WHERE opcion_id = 33) AS total_propia, " +
-            "count(*) FILTER (WHERE opcion_id = 38) AS total_propia_pero_vive_fuera";
+    public static final String COUNT_FAMILY_HOUSE = "count(*) FILTER (WHERE id_opcion = 31) AS total_rentada, " +
+            "count(*) FILTER (WHERE id_opcion = 32) AS total_prestada, " +
+            "count(*) FILTER (WHERE id_opcion = 33) AS total_propia, " +
+            "count(*) FILTER (WHERE id_opcion = 38) AS total_propia_pero_vive_fuera";
 
     public static final String COUNT_ECONOMIC_DEPENDENCY = "count(*) FILTER (WHERE dependencia_abuelo) AS total_abuelo, " +
             "count(*) FILTER (WHERE dependencia_esposo) AS total_esposo, " +
@@ -137,7 +137,7 @@ public class GeneralQuerysConstants {
             "count(*) FILTER ( WHERE respuesta_omultiple = 72) AS Motocicleta, " +
             "count(*) FILTER ( WHERE respuesta_omultiple = 73) AS Automovil_Particular ";
 
-    public static String COUNT_BLOOD_TYPE = "SELECT " +
+    public static final String COUNT_BLOOD_TYPE = "SELECT " +
             "count(*) FILTER ( WHERE tipo_sangre = 'A+' ) AS A_pos, " +
             "count(*) FILTER ( WHERE tipo_sangre = 'A-' ) AS A_neg, " +
             "count(*) FILTER ( WHERE tipo_sangre = 'B+' ) AS B_pos, " +
@@ -147,5 +147,13 @@ public class GeneralQuerysConstants {
             "count(*) FILTER ( WHERE tipo_sangre = 'O+' ) AS O_pos, " +
             "count(*) FILTER ( WHERE tipo_sangre = 'O-' ) AS O_neg";
 
-    public static String SELECT_CURP_QUERY = "SELECT curp FROM alumnos ";
+    public static final String COUNT_INDIGENOUS_LANGUAGE = "SELECT cual_lengua, count(*) AS total FROM alumnos GROUP BY cual_lengua;";
+    public static final String FILTER_COUNT_INDIGENOUS_LANGUAGE = " cual_lengua, count(*) AS total ";
+
+    public static String COUNT_HOMEWORK_DEVICES = "count(*) FILTER (WHERE opcion_id = 6) AS total_equipo_computo, " +
+            "count(*) FILTER (WHERE opcion_id = 7) AS total_internet, " +
+            "count(*) FILTER (WHERE opcion_id = 8) AS total_escritorio_yo_mesa, " +
+            "count(*) FILTER (WHERE opcion_id = 9) AS total_libros_especializados, " +
+            "count(*) FILTER (WHERE opcion_id = 10) AS total_espacio_adecuado";
+  public static String SELECT_CURP_QUERY = "SELECT curp FROM alumnos ";
 }
