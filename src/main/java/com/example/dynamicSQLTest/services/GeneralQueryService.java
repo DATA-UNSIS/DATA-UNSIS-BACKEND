@@ -117,7 +117,7 @@ public class GeneralQueryService {
                         results = familyHouseService.executeNativeQuery(ETitles.FAMILY_HOUSE, request);
                         allResults.add(results);
                         break;
-                    case ETitles.TRANSPORTATION_MEDIUM:
+                    case ETitles.TRANSPORT_MEDIUM:
                         tables = new ArrayList<>(Arrays.asList("respuestas", "alumnos"));
                         results = transportMediumService.executeTransportMediumQuery(request, tables);
                         allResults.add(results);

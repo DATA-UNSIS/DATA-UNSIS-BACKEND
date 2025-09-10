@@ -65,7 +65,7 @@ public class TransportMediumService {
             @SuppressWarnings("unchecked")
             List<Object[]> results = finalQuery.getResultList();
             QueryResponse queryResponse =  new QueryResponse();
-            queryResponse.setTitle(ETitles.TRANSPORTATION_MEDIUM);
+            queryResponse.setTitle(ETitles.TRANSPORT_MEDIUM);
             Map<String, Object> dataResults = new HashMap<>();
 
             if(!results.isEmpty()) queryResponse.setData(setDataResults(results));

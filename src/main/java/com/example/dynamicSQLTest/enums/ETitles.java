@@ -18,7 +18,7 @@ public enum ETitles {
     MUNICIPALITY_DISTRIBUTION (10, "Grafico que muestra la distribucion de alumnos por municipio"),
     TYPE_INSTITUTION_PROCEDENCY (11, "Grafico que muestra la distribucion de alumnos por tipo de institucion de procedencia"),
     FAMILY_HOUSE (12, "Grafico que muestra la distribucion de alumnos por tipo de vivienda familiar (viven en casa propia, rentada, prestada o viaja diariamente)"),
-    TRANSPORTATION_MEDIUM (13, "Grafico que muestra el medio de transporte utilizado por los alumnos"),
+    TRANSPORT_MEDIUM (13, "Grafico que muestra el medio de transporte utilizado por los alumnos"),
     HOMEWORK_DEVICES (14, "Grafico que muestra los medios de apoyo para estudiar en casa"),
     ECONOMIC_DEPENDENCY (15, "Grafico que muestra de quien dependen economicamente los alumnos"),
     INDIGENOUS_LANGUAGE (16, "Grafico que muestra las lenguas indigenas que hablan los estudiantes, solo las mas comunes (Náhuatl Mixteco, Triqui, Mazateco, Zapoteco, todos los demas que no esten escritos bien que se vallan a otros)"),
